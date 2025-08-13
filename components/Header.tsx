@@ -1,22 +1,40 @@
+/* /components/Header.tsx */
 import { useEffect, useState } from 'react';
+import {Content} from "../content/types/type.content";
 
-type Content = { nav: string[]; login: string; signup: string; brandColors?: Record<string, string> };
+type HeaderProps = {
+  onLoginClick: () => void;
+  onTabChange?: (tab: string, color: string) => void;
+};
 
-export default function Header({ onLoginClick, onTabChange }: { onLoginClick: () => void; onTabChange?: (tab: string, color: string) => void }) {
-  const [content, setContent] = useState<Content>({ nav: [], login: '', signup: '' });
+export default function Header({ onLoginClick, onTabChange }: HeaderProps) {
+  const [content, setContent] = useState<Content>({
+    nav: [],
+    login: '',
+    signup: '',
+    offerTitle: '',
+    offerSubtitle: '',
+    offerCTA: '',
+    brandColors: {},
+  });
   const [activeTab, setActiveTab] = useState<string>('sports');
 
   useEffect(() => {
-    fetch('/api/content').then((r) => r.json()).then((d) => {
-      setContent(d);
-      const init = 'sports';
-      const color = d.brandColors?.[init] || '#00a826';
-      document.documentElement.style.setProperty('--brand', color);
-    });
+    fetch('/api/content')
+        .then((r) => r.json())
+        .then((d: Content) => {
+          setContent(d);
+          const init = 'sports';
+          const color = d.brandColors?.[init] || '#00a826';
+          document.documentElement.style.setProperty('--brand', color);
+        });
   }, []);
 
   function keyify(label: string) {
-    return label.toLowerCase().replace(/\s*&\s*/g, 'and').replace(/\s+/g, '');
+    return label
+        .toLowerCase()
+        .replace(/\s*&\s*/g, 'and')
+        .replace(/\s+/g, '');
   }
 
   function handleTab(label: string) {
@@ -28,34 +46,45 @@ export default function Header({ onLoginClick, onTabChange }: { onLoginClick: ()
   }
 
   return (
-    <header className="bg-black text-white interface-font">
-      <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-        <div className="font-bold text-xl">betway</div>
-        <nav className="flex gap-6">
-          {content.nav.map((label) => {
-            const key = keyify(label);
-            const active = activeTab === key;
-            return (
-              <button
-                key={label}
-                onClick={() => handleTab(label)}
-                className={
-                  'capitalize pb-1 border-b-2 transition-colors ' +
-                  (active ? 'border-[var(--brand)] text-[var(--brand)]' : 'border-transparent hover:border-white')
-                }
-              >
-                {label}
-              </button>
-            );
-          })}
-        </nav>
-        <div className="flex gap-2">
-          <button className="px-3 py-1 rounded bg-white text-black interface-font" onClick={onLoginClick}>
-            {content.login}
-          </button>
-          <button className="px-3 py-1 rounded border border-white interface-font">{content.signup}</button>
+      <header className="bg-black text-white interface-font">
+        <div className="container mx-auto px-4 py-3 header-shell">
+          {/* Brand row */}
+          <div className="header-brand-row">
+            <div className="font-bold text-xl">betway</div>
+          </div>
+
+          {/* Nav row (text buttons only) */}
+          <nav className="header-nav-row">
+            {content.nav.map((label) => {
+              const key = keyify(label);
+              const active = activeTab === key;
+              return (
+                  <button
+                      key={label}
+                      onClick={() => handleTab(label)}
+                      className={
+                          'capitalize pb-1 border-b-2 transition-colors ' +
+                          (active
+                              ? 'border-[var(--brand)] text-[var(--brand)]'
+                              : 'border-transparent hover:border-white')
+                      }
+                  >
+                    {label}
+                  </button>
+              );
+            })}
+          </nav>
+
+          {/* Auth row */}
+          <div className="header-auth-row">
+            <button className="btn btn-primary" onClick={onLoginClick}>
+              {content.login || 'Login'}
+            </button>
+            <button className="btn btn-secondary">
+              {content.signup || 'Sign up'}
+            </button>
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
   );
 }

@@ -15,3 +15,29 @@ a { text-decoration: none; color: inherit; }
 .interface-font {
   font-family: Interface, Arial, sans-serif;
 }
+
+/* --- Auth buttons (primary/secondary) --- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 0.5rem 0.875rem; border-radius: 0.5rem; font-weight: 600;
+  transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease, opacity 160ms ease;
+  border: 1px solid transparent;
+}
+.btn-primary { background: rgb(0,168,38); color: #fff; border-color: rgb(0,168,38); }
+.btn-primary:hover { background: rgb(0,204,44); border-color: rgb(0,204,44); }
+.btn-secondary { background: #fff; color: rgb(0,168,38); border-color: rgb(0,168,38); }
+.btn-secondary:hover { background: rgb(0,168,38); color: #fff; border-color: rgb(0,168,38); }
+
+/* mobile header layout */
+@media (max-width: 767px) {
+  .header-shell { display: flex; flex-direction: column; gap: 0.75rem; }
+  .header-nav-row { order: 2; display: flex; flex-wrap: wrap; gap: 1rem; }
+  .header-auth-row { order: 3; display: flex; gap: 0.5rem; }
+  .header-brand-row { order: 1; display: flex; justify-content: space-between; align-items: center; }
+}
+@media (min-width: 768px) {
+  .header-shell { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+  .header-nav-row { display: flex; gap: 1rem; }
+  .header-auth-row { display: flex; gap: 0.5rem; }
+  .header-brand-row { display: flex; align-items: center; gap: 1rem; }
+}
