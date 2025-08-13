@@ -22,11 +22,21 @@ export default function LandingSection() {
   if (!offer) return null;
 
   return (
-    <section style={{ padding: '3rem 1rem', background: '#111', color: '#fff', textAlign: 'center' }}>
-      <div className="container">
-        <h1 style={{ fontSize: '2rem', marginBottom: '1rem' }}>{offer.offerTitle}</h1>
-        <p style={{ fontSize: '1.2rem', marginBottom: '2rem' }}>{offer.offerSubtitle}</p>
-        <button style={{ padding: '0.75rem 1.5rem', background: '#00a826', border: 'none', borderRadius: '4px', color: '#fff', fontSize: '1rem', cursor: 'pointer' }}>
+    <section className="relative interface-font">
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: "url('/images/the-hunch-mobile.webp')" }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/60" />
+
+      <div className="relative container mx-auto px-4 py-16 text-white text-center md:text-left md:py-24">
+        <h1 className="text-3xl md:text-5xl font-extrabold leading-tight max-w-2xl">{offer.offerTitle}</h1>
+        <p className="mt-3 text-lg md:text-2xl opacity-90 max-w-2xl">{offer.offerSubtitle}</p>
+
+        <button
+          className="mt-6 inline-block px-6 py-3 rounded font-semibold"
+          style={{ background: 'var(--brand)' }}
+        >
           {offer.offerCTA}
         </button>
       </div>

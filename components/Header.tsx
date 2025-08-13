@@ -9,8 +9,8 @@ export default function Header({ onLoginClick, onTabChange }: { onLoginClick: ()
   useEffect(() => {
     fetch('/api/content').then((r) => r.json()).then((d) => {
       setContent(d);
-      const initial = 'sports';
-      const color = d.brandColors?.[initial] || '#00a826';
+      const init = 'sports';
+      const color = d.brandColors?.[init] || '#00a826';
       document.documentElement.style.setProperty('--brand', color);
     });
   }, []);
@@ -28,7 +28,7 @@ export default function Header({ onLoginClick, onTabChange }: { onLoginClick: ()
   }
 
   return (
-    <header className="bg-black text-white">
+    <header className="bg-black text-white interface-font">
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
         <div className="font-bold text-xl">betway</div>
         <nav className="flex gap-6">
@@ -50,10 +50,10 @@ export default function Header({ onLoginClick, onTabChange }: { onLoginClick: ()
           })}
         </nav>
         <div className="flex gap-2">
-          <button className="px-3 py-1 rounded bg-white text-black" onClick={onLoginClick}>
+          <button className="px-3 py-1 rounded bg-white text-black interface-font" onClick={onLoginClick}>
             {content.login}
           </button>
-          <button className="px-3 py-1 rounded border border-white">{content.signup}</button>
+          <button className="px-3 py-1 rounded border border-white interface-font">{content.signup}</button>
         </div>
       </div>
     </header>

@@ -1,18 +1,21 @@
 import { useState } from 'react';
-import FooterCTA from '../components/FooterCTA';
 import Header from '../components/Header';
 import LoginModal from '../components/LoginModal';
 import LandingSection from '../components/LandingSection';
+import FooterCTA from '../components/FooterCTA';
 
 export default function Home() {
   const [showLogin, setShowLogin] = useState(false);
 
   return (
-    <div>
-      <Header onLoginClick={() => setShowLogin(true)} onTabChange={() => {}} />
+  <div className="min-h-screen flex flex-col">
+    <Header onLoginClick={() => setShowLogin(true)} />
+    <main className="flex-1">
       <LandingSection />
-      {showLogin && <LoginModal onClose={() => setShowLogin(false)} />}
-          <FooterCTA />
-    </div>
-  );
+    </main>
+    <FooterCTA />
+    {showLogin && <LoginModal onClose={() => setShowLogin(false)} />}
+  </div>
+);
+
 }
