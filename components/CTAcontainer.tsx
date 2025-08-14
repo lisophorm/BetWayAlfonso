@@ -1,6 +1,6 @@
-export default function FooterCTA() {
+export default function CTAcontainer() {
   return (
-    <footer className="mt-12">
+    <div className="mt-12">
       <div className="container mx-auto px-4 py-8">
         <button
           className="px-6 py-3 rounded text-white font-semibold interface-font"
@@ -9,6 +9,6 @@ export default function FooterCTA() {
           Join Now
         </button>
       </div>
-    </footer>
+    </div>
   );
 }
