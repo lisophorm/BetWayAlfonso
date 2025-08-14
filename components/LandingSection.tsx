@@ -25,7 +25,7 @@ export default function LandingSection() {
     <section className="relative interface-font">
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url('/images/the-hunch-mobile.webp')" }}
+        style={{ backgroundImage: "url('/images/the-hunch-regenerated.png')" }}
       />
       <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/60" />
 
