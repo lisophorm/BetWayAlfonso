@@ -12,52 +12,9 @@ body {
 
 a { text-decoration: none; color: inherit; }
 
-.interface-font {
-  font-family: Interface, Arial, sans-serif;
-}
+.interface-font { font-family: Interface, Arial, sans-serif; }
 
-/* --- Auth buttons (primary/secondary) --- */
-.btn {
-  display: inline-flex; align-items: center; justify-content: center;
-  padding: 0.5rem 0.875rem;
-  border-radius: 3px;              /* ← was larger, now subtle */
-  font-weight: 600;
-  transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease, opacity 160ms ease;
-  border: 1px solid transparent;
-}
-.btn-primary { background: rgb(0,168,38); color: #fff; border-color: rgb(0,168,38); }
-.btn-primary:hover { background: rgb(0,204,44); border-color: rgb(0,204,44); }
-.btn-secondary { background: #fff; color: rgb(0,168,38); border-color: rgb(0,168,38); }
-.btn-secondary:hover { background: rgb(0,168,38); color: #fff; border-color: rgb(0,168,38); }
-
-/* mobile header layout */
-/* mobile header layout: stack brand, nav, then auth buttons */
-@media (max-width: 767px) {
-  .header-shell { display: flex; flex-direction: column; gap: 0.75rem; }
-  .header-nav-row { order: 2; display: flex; flex-wrap: wrap; gap: 1rem; }
-  .header-auth-row { order: 3; display: flex; gap: 0.5rem; }
-  .header-brand-row { order: 1; display: flex; justify-content: space-between; align-items: center; }
-}
-@media (min-width: 768px) {
-  .header-shell { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
-  .header-nav-row { display: flex; gap: 1rem; }
-  .header-auth-row { display: flex; gap: 0.5rem; }
-  .header-brand-row { display: flex; align-items: center; gap: 1rem; }
-}
-
-
-/* --- HERO: CTA card (md+) --- */
-.cta-card {
-  background: #fff;
-  color: #111;
-  border-radius: 12px;
-  padding: 1.5rem 1.75rem;
-  max-width: 580px;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.15);
-}
-
-/* --- HERO: sticky CTA (mobile) --- */
-/* fixed so it never jumps; black translucent background; handle iOS safe area */
+/* ---------- Sticky CTA (MOBILE) ---------- */
 .cta-sticky {
   position: fixed;
   left: 0; right: 0; bottom: 0;
@@ -67,39 +24,112 @@ a { text-decoration: none; color: inherit; }
   padding: 0.9rem 1rem calc(0.9rem + env(safe-area-inset-bottom));
   backdrop-filter: saturate(120%) blur(2px);
 }
-
-/* optional: avoid content hiding behind sticky CTA */
 @media (max-width: 767px) {
-  main { padding-bottom: 140px; }
+  main { padding-bottom: 140px; }  /* keep content clear of sticky CTA */
 }
 
-/* tune hero text sizes a bit for large screens */
-@media (min-width: 1280px) {
-  .cta-card h1 { font-size: 3.75rem; } /* ~60px */
+/* ---------- Buttons (base + variants) ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 0.5rem 0.875rem;       /* default padding for general buttons */
+  border-radius: 3px;             /* subtle corners everywhere */
+  font-weight: 600;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease, opacity 160ms ease;
 }
 
-.no-scrollbar::-webkit-scrollbar { display: none; }
-.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-/* styles/globals.scss */
-@media (max-width: 767px) {
-  main { padding-top: 64px; } /* only needed if header is fixed/sticky */
-  main { padding-bottom: 140px; } /* keeps content clear of sticky CTA, as before */
+.btn-primary {
+  background: rgb(0,168,38);
+  color: #fff;
+  border-color: rgb(0,168,38);
+}
+.btn-primary:hover {
+  background: rgb(0,204,44);
+  border-color: rgb(0,204,44);
 }
 
-/* Header: auth buttons & nav sizing */
+.btn-secondary {
+  background: #fff;
+  color: rgb(0,168,38);
+  border-color: rgb(0,168,38);
+}
+.btn-secondary:hover {
+  background: rgb(0,168,38);
+  color: #fff;
+  border-color: rgb(0,168,38);
+}
+
+/* ---------- Header: auth button sizing & fonts ---------- */
 .header-auth .btn {
   font-size: 13px;
-  padding: 4px 8px;                /* internal padding */
-  margin: 0 8px 0 0;               /* external spacing */
+  padding: 4px 8px;      /* internal */
+  margin-right: 8px;     /* external spacing */
+  font-family: Interface, Arial, sans-serif;
 }
 .header-auth .btn:last-child { margin-right: 0; }
 
-/* Force Interface font on all nav items and all buttons */
-.header-nav-row,
-.header-auth .btn,
+/* Ensure header auth always sits above nav (for hover/click) */
+header .header-auth { position: relative; z-index: 10; }
+header nav          { position: relative; z-index: 0; }
+
+/* ---------- Nav buttons font/size ---------- */
 .nav-button {
   font-weight: bold;
   font-size: 13px;
   font-family: Interface, Arial, sans-serif;
+}
+
+/* ---------- Focus & accessibility ---------- */
+/* Remove the default dashed rectangle */
+button, [role="button"] { outline: none; }
+
+
+/* ---------- Utilities ---------- */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Kill the default dotted focus ring on header auth buttons (Chrome/Safari/Firefox) */
+header .header-auth .btn,
+header .header-auth .btn:focus,
+header .header-auth .btn:focus-visible,
+header .header-auth .btn:focus-within,
+header .header-auth .btn:-moz-focusring {
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Optional: if any auth button is actually an <a> element */
+header .header-auth a.btn,
+header .header-auth a.btn:focus,
+header .header-auth a.btn:focus-visible,
+header .header-auth a.btn:focus-within,
+header .header-auth a.btn:-moz-focusring {
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+
+/* --- Nuke the always-visible focus ring ONLY for header auth buttons --- */
+header .header-auth .btn,
+header .header-auth .btn:focus,
+header .header-auth .btn:focus-visible,
+header .header-auth .btn:focus-within,
+header .header-auth .btn:-moz-focusring {
+  outline: 0 !important;
+  outline-offset: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Firefox inner dotted border */
+header .header-auth .btn::-moz-focus-inner {
+  border: 0 !important;
+  padding: 0 !important; /* prevents Firefox from drawing the inner focus padding border */
+}
+
+/* WebKit tap highlight (mobile Safari) */
+header .header-auth .btn { -webkit-tap-highlight-color: transparent; }
+
+/* Ensure our visible border remains solid (not dashed) */
+header .header-auth .btn {
+  border-style: solid !important;
 }
