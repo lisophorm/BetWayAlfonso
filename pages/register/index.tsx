@@ -9,6 +9,7 @@ import {patchForm, selectRegister, setStep, submitRegistrationThunk,} from '../.
 import {StepKey} from "../../content/types/type.RegistrationStep";
 import {emailRx, isAtLeast18, isValidPhone} from "../../lib/validation";
 import {TITLES} from "../../content/declarations/const.titles";
+import {TitleOption} from "../../content/types/type.TitleOption";
 
 /* =========================
    Page
@@ -273,7 +274,7 @@ function Step2() {
                     <FieldLabel>Title</FieldLabel>
                     <Select
                         value={form.title}
-                        onChange={(e) => dispatch(patchForm({ title: e.target.value as any }))}
+                        onChange={(e) => dispatch(patchForm({ title: e.target.value as TitleOption }))}
                     >
                         {TITLES.map((t) => (
                             <option key={t}>{t}</option>

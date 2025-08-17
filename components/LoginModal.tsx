@@ -4,6 +4,7 @@ import {useState} from 'react';
 import {useAppDispatch, useAppSelector} from '../store/hooks';
 import {selectAuth, signInThunk} from '../store/slices/authSlice';
 import {emailRx} from "../lib/validation";
+import Link from "next/link";
 
 type Props = { onClose: () => void };
 
@@ -74,8 +75,8 @@ export default function LoginModal({onClose}: Props) {
                 </form>
 
                 <div className="mt-3 text-sm flex justify-between">
-                    <a href="#" className="text-[var(--brand)] hover:opacity-80">Forgot Username/Password</a>
-                    <a href="/register" className="text-[var(--brand)] hover:opacity-80">Register here</a>
+                    <Link href="#" className="text-[var(--brand)] hover:opacity-80">Forgot Username/Password</Link>
+                    <Link href="/register" className="text-[var(--brand)] hover:opacity-80">Register here</Link>
                 </div>
             </div>
         </div>

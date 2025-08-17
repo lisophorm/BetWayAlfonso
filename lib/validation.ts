@@ -4,7 +4,7 @@ export const digitsOnly = (s: string) => (s.match(/\d/g) || []).length;
 export type DOB = { day: number; month: number; year: number };
 
 export function isAtLeast18(dob: DOB) {
-    const { day, month, year } = dob || ({} as any);
+    const { day, month, year } = dob || ({} as DOB);
     const d = new Date(year, month - 1, day);
     if (Number.isNaN(d.getTime())) return false;
     const now = new Date();

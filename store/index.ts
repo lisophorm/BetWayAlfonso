@@ -1,4 +1,4 @@
-import { configureStore, combineReducers, type PreloadedState } from '@reduxjs/toolkit';
+import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import authReducer from './slices/authSlice';
 import contentReducer from './slices/contentSlice';
 import registerReducer from './slices/registerSlice';
@@ -15,7 +15,7 @@ export const rootReducer = combineReducers({
 export type RootState = ReturnType<typeof rootReducer>;
 
 // Factory that can accept a preloaded state (used by tests)
-export const setupStore = (preloadedState?: PreloadedState<RootState>) =>
+export const setupStore = (preloadedState?: Partial<RootState>) =>
     configureStore({
         reducer: rootReducer,
         preloadedState,
