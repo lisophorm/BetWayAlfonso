@@ -5,7 +5,6 @@ import type {Content} from '../content/types/type.content';
 import Link from "next/link";
 import FireworksCanvas from "@/components/FireworksCanvas";
 
-
 export default function Hero() {
     // Only needed for the mobile sticky CTA
     const [content, setContent] = useState<Pick<
