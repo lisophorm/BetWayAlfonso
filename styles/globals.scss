@@ -122,3 +122,37 @@ button:focus-visible, [role="button"]:focus-visible {
   box-shadow: 0 0 0 3px rgba(0,168,38,0.35);
   border-color: rgb(0,168,38);
 }
+
+/* ===== Second-row NAV (grey bar) ===== */
+.nav-grey {
+  background: #31302c; /* exact grey */
+}
+
+/* buttons fill the full bar height so the border sits at the very bottom */
+.nav-item {
+  /* sizing */
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 12px;                /* spacing left/right */
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  border-bottom: 3px solid transparent; /* underline lives here */
+  /* colors */
+  color: #aaa9a7;                 /* inactive */
+  transition: color 160ms ease, border-color 160ms ease;
+  white-space: nowrap;
+}
+
+/* hover only nudges color slightly; no underline unless active */
+.nav-item:hover { color: #e4e3e2; }
+
+/* active = white text + brand-green bottom border */
+.nav-item--active {
+  color: #ffffff;
+  border-bottom-color: var(--brand, #00a826);
+}
+
+/* explicitly keep inactive underline hidden */
+.nav-item--inactive { border-bottom-color: transparent; }
