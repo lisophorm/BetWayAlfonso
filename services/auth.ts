@@ -1,10 +1,6 @@
 // /services/auth.ts
-export type SignInResponse = {
-    accountId: string;
-    accountStatus: string;
-    name: string;
-    registeredCountry: string;
-};
+
+import {SignInResponse} from "../content/types/type.SigninResponse";
 
 export async function signIn(email: string, password: string): Promise<SignInResponse> {
     const res = await fetch('/api/sign-in', {

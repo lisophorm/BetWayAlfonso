@@ -1,20 +1,36 @@
 @use "tailwindcss";
 
+/* =====================
+   Root & Base
+===================== */
 :root { --brand: #00a826; }
 
 html, body { height: 100%; }
 
 body {
   margin: 0;
-  font-family: "Helvetica Neue", -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
   color: #111;
+  font-family: "Helvetica Neue", -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
 }
 
 a { text-decoration: none; color: inherit; }
 
 .interface-font { font-family: Interface, Arial, sans-serif; }
 
-/* ---------- Sticky CTA (MOBILE) ---------- */
+/* =====================
+   Utilities
+===================== */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Keep mobile content clear of sticky CTA */
+@media (max-width: 767px) {
+  main { padding-bottom: 140px; }
+}
+
+/* =====================
+   Sticky CTA (mobile)
+===================== */
 .cta-sticky {
   position: fixed;
   left: 0; right: 0; bottom: 0;
@@ -24,21 +40,21 @@ a { text-decoration: none; color: inherit; }
   padding: 0.9rem 1rem calc(0.9rem + env(safe-area-inset-bottom));
   backdrop-filter: saturate(120%) blur(2px);
 }
-@media (max-width: 767px) {
-  main { padding-bottom: 140px; }  /* keep content clear of sticky CTA */
-}
 
-/* ---------- Buttons (base + variants) ---------- */
+/* =====================
+   Buttons (base + variants)
+===================== */
 .btn {
   display: inline-flex; align-items: center; justify-content: center;
-  padding: 0.5rem 0.875rem;       /* default padding for general buttons */
-  border-radius: 3px;             /* subtle corners everywhere */
+  padding: 0.5rem 0.875rem;     /* default buttons */
+  border-radius: 3px;           /* subtle corners */
   font-weight: 600;
   border: 1px solid transparent;
   cursor: pointer;
   transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease, opacity 160ms ease;
 }
 
+/* Primary = green bg, white text */
 .btn-primary {
   background: rgb(0,168,38);
   color: #fff;
@@ -49,6 +65,7 @@ a { text-decoration: none; color: inherit; }
   border-color: rgb(0,204,44);
 }
 
+/* Secondary = white bg, green text */
 .btn-secondary {
   background: #fff;
   color: rgb(0,168,38);
@@ -60,7 +77,14 @@ a { text-decoration: none; color: inherit; }
   border-color: rgb(0,168,38);
 }
 
-/* ---------- Header: auth button sizing & fonts ---------- */
+/* =====================
+   Header
+===================== */
+/* Put auth above nav so hover/click always work */
+header .header-auth { position: relative; z-index: 10; }
+header nav          { position: relative; z-index: 0; }
+
+/* Header auth sizing + Interface font */
 .header-auth .btn {
   font-size: 13px;
   padding: 4px 8px;      /* internal */
@@ -69,47 +93,14 @@ a { text-decoration: none; color: inherit; }
 }
 .header-auth .btn:last-child { margin-right: 0; }
 
-/* Ensure header auth always sits above nav (for hover/click) */
-header .header-auth { position: relative; z-index: 10; }
-header nav          { position: relative; z-index: 0; }
-
-/* ---------- Nav buttons font/size ---------- */
+/* Nav buttons font/size */
 .nav-button {
   font-weight: bold;
   font-size: 13px;
   font-family: Interface, Arial, sans-serif;
 }
 
-/* ---------- Focus & accessibility ---------- */
-/* Remove the default dashed rectangle */
-button, [role="button"] { outline: none; }
-
-
-/* ---------- Utilities ---------- */
-.no-scrollbar::-webkit-scrollbar { display: none; }
-.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-/* Kill the default dotted focus ring on header auth buttons (Chrome/Safari/Firefox) */
-header .header-auth .btn,
-header .header-auth .btn:focus,
-header .header-auth .btn:focus-visible,
-header .header-auth .btn:focus-within,
-header .header-auth .btn:-moz-focusring {
-  outline: 0 !important;
-  box-shadow: none !important;
-}
-
-/* Optional: if any auth button is actually an <a> element */
-header .header-auth a.btn,
-header .header-auth a.btn:focus,
-header .header-auth a.btn:focus-visible,
-header .header-auth a.btn:focus-within,
-header .header-auth a.btn:-moz-focusring {
-  outline: 0 !important;
-  box-shadow: none !important;
-}
-
-/* --- Nuke the always-visible focus ring ONLY for header auth buttons --- */
+/* Remove always-visible focus ring just for header auth buttons */
 header .header-auth .btn,
 header .header-auth .btn:focus,
 header .header-auth .btn:focus-visible,
@@ -119,17 +110,15 @@ header .header-auth .btn:-moz-focusring {
   outline-offset: 0 !important;
   box-shadow: none !important;
 }
-
-/* Firefox inner dotted border */
 header .header-auth .btn::-moz-focus-inner {
   border: 0 !important;
-  padding: 0 !important; /* prevents Firefox from drawing the inner focus padding border */
+  padding: 0 !important;
 }
-
-/* WebKit tap highlight (mobile Safari) */
 header .header-auth .btn { -webkit-tap-highlight-color: transparent; }
 
-/* Ensure our visible border remains solid (not dashed) */
-header .header-auth .btn {
-  border-style: solid !important;
+/* Keep a nice focus style for keyboard outside the header auth area */
+button:focus-visible, [role="button"]:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0,168,38,0.35);
+  border-color: rgb(0,168,38);
 }

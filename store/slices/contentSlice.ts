@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import type { RootState } from '../';
 import type { Content } from '../../content/types/type.content';
+import {ContentState} from "../../content/types/type.ContentState";
 
 export const fetchContent = createAsyncThunk<Content>(
     'content/fetch',
@@ -11,11 +12,6 @@ export const fetchContent = createAsyncThunk<Content>(
     }
 );
 
-type ContentState = {
-    data: Content | null;
-    status: 'idle' | 'loading' | 'succeeded' | 'failed';
-    error?: string;
-};
 
 const initialState: ContentState = { data: null, status: 'idle' };
 

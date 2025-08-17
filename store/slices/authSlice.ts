@@ -1,9 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import type { RootState } from '../';
+import {SignInResponse} from "../../content/types/type.SigninResponse";
+import {AuthState} from "../../content/types/type.AuthState";
 
-export type SignInResponse = {
-    accountId: string; accountStatus: string; name: string; registeredCountry: string;
-};
 
 export const signInThunk = createAsyncThunk<SignInResponse, { email: string; password: string }>(
     'auth/signIn',
@@ -20,11 +19,7 @@ export const signInThunk = createAsyncThunk<SignInResponse, { email: string; pas
     }
 );
 
-type AuthState = {
-    user: SignInResponse | null;
-    status: 'idle' | 'loading' | 'succeeded' | 'failed';
-    error?: string;
-};
+
 const initialState: AuthState = { user: null, status: 'idle' };
 
 const slice = createSlice({

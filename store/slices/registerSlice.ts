@@ -1,18 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../';
-
-export type StepKey = 1 | 2 | 3 | 4;
-export type RegistrationPayload = {
-    offer: 'sports' | 'none';
-    title: 'Mr' | 'Ms' | 'Mrs' | 'Mx' | 'Dr';
-    firstName: string;
-    lastName: string;
-    dob: { day: number; month: number; year: number };
-    username: string;
-    password: string;
-    email: string;
-    phone?: string;
-};
+import {RegisterState, StepKey} from "../../content/types/type.RegistrationStep";
+import {RegistrationPayload} from "../../content/types/type.Registration";
 
 export const submitRegistrationThunk = createAsyncThunk<
     { accountId: string; status: 'created' },
@@ -31,12 +20,7 @@ export const submitRegistrationThunk = createAsyncThunk<
     return data;
 });
 
-type RegisterState = {
-    step: StepKey;
-    form: RegistrationPayload;
-    status: 'idle' | 'submitting' | 'succeeded' | 'failed';
-    error?: string;
-};
+
 
 const initialState: RegisterState = {
     step: 1,
