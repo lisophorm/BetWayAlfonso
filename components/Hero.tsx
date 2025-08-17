@@ -3,7 +3,7 @@
 import {useEffect, useState} from 'react';
 import type {Content} from '../content/types/type.content';
 import Link from "next/link";
-import FireworksCanvas from "../FireworksCanvas";
+import FireworksCanvas from "@/components/FireworksCanvas";
 
 
 export default function Hero() {
