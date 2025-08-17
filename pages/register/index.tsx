@@ -1,25 +1,54 @@
+// /pages/register/index.tsx
 'use client';
 
 import {useMemo, useState} from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import StepKey, {patchForm, selectRegister, setStep, submitRegistrationThunk} from '../../store/slices/registerSlice';
-import {useAppDispatch, useAppSelector} from "../../store/hooks";
-import {TITLES} from "../../content/declarations/const.titles";
-import {RegistrationStep} from "../../content/types/type.RegistrationStep";
+import {useAppDispatch, useAppSelector} from '../../store/hooks';
+import {patchForm, selectRegister, setStep, submitRegistrationThunk,} from '../../store/slices/registerSlice';
+import {StepKey} from "../../content/types/type.RegistrationStep";
 
+const TITLES = ['Mr', 'Ms', 'Mrs', 'Mx', 'Dr'] as const;
+
+/* =========================
+   Validation helpers
+========================= */
+const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const digitsOnly = (s: string) => (s.match(/\d/g) || []).length;
+
+function isAtLeast18(dob: { day: number; month: number; year: number }) {
+    const { day, month, year } = dob || ({} as any);
+    const d = new Date(year, month - 1, day);
+    if (Number.isNaN(d.getTime())) return false;
+    const now = new Date();
+    let age = now.getFullYear() - d.getFullYear();
+    const beforeBirthdayThisYear =
+        now.getMonth() < d.getMonth() ||
+        (now.getMonth() === d.getMonth() && now.getDate() < d.getDate());
+    if (beforeBirthdayThisYear) age--;
+    return age >= 18;
+}
+
+function isValidPhone(phone: string) {
+    if (!phone) return true; // optional; change to `false` to make required
+    const count = digitsOnly(phone); // allow spaces/dashes/() but count digits
+    return count >= 10 && count <= 15;
+}
+
+/* =========================
+   Page
+========================= */
 export default function RegisterPage() {
     const dispatch = useAppDispatch();
-    const {step, form, status} = useAppSelector(selectRegister);
+    const { step, form, status } = useAppSelector(selectRegister);
     const [error, setError] = useState('');
 
-
-    const steps: RegistrationStep[] = useMemo(
+    const steps = useMemo(
         () => [
-            {key: 1, label: 'Welcome Offer'},
-            {key: 2, label: 'Personal Details'},
-            {key: 3, label: 'Account Information'},
-            {key: 4, label: 'Contact Details'},
+            { key: 1 as StepKey, label: 'Welcome Offer' },
+            { key: 2 as StepKey, label: 'Personal Details' },
+            { key: 3 as StepKey, label: 'Account Information' },
+            { key: 4 as StepKey, label: 'Contact Details' },
         ],
         []
     );
@@ -30,14 +59,19 @@ export default function RegisterPage() {
         }
         if (step === 2) {
             if (!form.firstName || !form.lastName) return 'Please fill first and last name.';
-            const {day, month, year} = form.dob || {day: 0, month: 0, year: 0};
+            const { day, month, year } = form.dob || { day: 0, month: 0, year: 0 };
             if (!day || !month || !year) return 'Please complete your date of birth.';
+            if (!isAtLeast18(form.dob)) return 'You must be at least 18 years old to register.';
         }
         if (step === 3) {
             if (!form.username) return 'Please choose a username.';
             if (form.password.length < 8) return 'Password must be at least 8 characters.';
-            if (!/[A-Za-z]/.test(form.password) || !/\d/.test(form.password)) return 'Password must contain letters and numbers.';
-            if (!/^[^@]+@[^@]+\.[^@]+$/.test(form.email)) return 'Please provide a valid email.';
+            if (!/[A-Za-z]/.test(form.password) || !/\d/.test(form.password))
+                return 'Password must contain letters and numbers.';
+            if (!emailRx.test(form.email)) return 'Please provide a valid email.';
+        }
+        if (step === 4) {
+            if (!isValidPhone(form.phone || '')) return 'Please enter a valid phone number.';
         }
         return null;
     };
@@ -64,16 +98,25 @@ export default function RegisterPage() {
 
     return (
         <div className="min-h-screen bg-[#f5f5f5]">
+            {/* Header */}
             <header className="bg-black text-white">
                 <div className="container mx-auto px-4 py-3 flex items-center gap-4">
                     <Link href="/" className="inline-flex">
-                        <Image src="/images/betway-logo.svg" alt="Betway" width={112} height={28} className="invert"/>
+                        <Image
+                            src="/images/betway-logo.svg"
+                            alt="Betway"
+                            width={112}
+                            height={28}
+                            className="invert"
+                        />
                     </Link>
                     <span className="text-sm opacity-80">Create your account</span>
                 </div>
             </header>
 
+            {/* Main */}
             <main className="container mx-auto px-4 py-6">
+                {/* Progress */}
                 <ol className="relative grid grid-cols-4 gap-4 mb-6">
                     {steps.map((s, idx) => {
                         const active = s.key === step;
@@ -99,20 +142,28 @@ export default function RegisterPage() {
                     })}
                 </ol>
 
+                {/* Card */}
                 <section className="bg-white rounded-lg shadow-sm p-4 md:p-6">
                     {error && <p className="text-red-600 mb-3">{error}</p>}
 
-                    {step === 1 && <Step1/>}
-                    {step === 2 && <Step2/>}
-                    {step === 3 && <Step3/>}
-                    {step === 4 && <Step4/>}
+                    {step === 1 && <Step1 />}
+                    {step === 2 && <Step2 />}
+                    {step === 3 && <Step3 />}
+                    {step === 4 && <Step4 />}
 
                     <div className="mt-6 flex items-center justify-between">
-                        <button className="btn btn-secondary" onClick={prev}
-                                disabled={step === 1 || status === 'submitting'}>
+                        <button
+                            className="btn btn-secondary"
+                            onClick={prev}
+                            disabled={step === 1 || status === 'submitting'}
+                        >
                             Back
                         </button>
-                        <button className="btn btn-primary" onClick={next} disabled={status === 'submitting'}>
+                        <button
+                            className="btn btn-primary"
+                            onClick={next}
+                            disabled={status === 'submitting'}
+                        >
                             {step === 4 ? (status === 'submitting' ? 'Submitting…' : 'Finish') : 'Next'}
                         </button>
                     </div>
@@ -122,11 +173,12 @@ export default function RegisterPage() {
     );
 }
 
-/* ===== Helpers ===== */
-function FieldLabel({children}: { children: React.ReactNode }) {
+/* =========================
+   Small UI helpers
+========================= */
+function FieldLabel({ children }: { children: React.ReactNode }) {
     return <label className="block text-gray-700 mb-1 font-semibold">{children}</label>;
 }
-
 function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
     return (
         <input
@@ -138,7 +190,6 @@ function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
         />
     );
 }
-
 function Select(props: React.SelectHTMLAttributes<HTMLSelectElement>) {
     return (
         <select
@@ -150,15 +201,21 @@ function Select(props: React.SelectHTMLAttributes<HTMLSelectElement>) {
         />
     );
 }
-
 function OKBadge() {
-    return <span className="inline-block ml-2 align-middle text-[var(--brand)] font-bold">✔</span>;
+    return (
+        <span className="inline-block ml-2 align-middle text-[var(--brand)] font-bold">✔</span>
+    );
+}
+function okClass(ok: boolean) {
+    return ok ? 'text-[var(--brand)]' : 'text-gray-400';
 }
 
-/* ===== Steps ===== */
+/* =========================
+   Steps
+========================= */
 function Step1() {
     const dispatch = useAppDispatch();
-    const {form} = useAppSelector(selectRegister);
+    const { form } = useAppSelector(selectRegister);
     return (
         <>
             <h2 className="text-lg font-bold mb-3">Choose the Welcome Offer</h2>
@@ -167,18 +224,20 @@ function Step1() {
                     <input
                         type="radio"
                         checked={form.offer === 'sports'}
-                        onChange={() => dispatch(patchForm({offer: 'sports'}))}
+                        onChange={() => dispatch(patchForm({ offer: 'sports' }))}
                     />
                     <div className="grow">
                         <span className="font-bold text-[var(--brand)]">Sports</span>
-                        <p className="text-xs opacity-70 mt-1">Upto £30 Matched Free Bet + 100 Free Spins</p>
+                        <p className="text-xs opacity-70 mt-1">
+                            Upto £30 Matched Free Bet + 100 Free Spins
+                        </p>
                     </div>
                 </label>
                 <label className="flex items-start gap-3 p-4 cursor-pointer">
                     <input
                         type="radio"
                         checked={form.offer === 'none'}
-                        onChange={() => dispatch(patchForm({offer: 'none'}))}
+                        onChange={() => dispatch(patchForm({ offer: 'none' }))}
                     />
                     <div className="grow">
                         <span className="font-semibold">No Welcome Offer</span>
@@ -191,35 +250,49 @@ function Step1() {
 
 function Step2() {
     const dispatch = useAppDispatch();
-    const {form} = useAppSelector(selectRegister);
+    const { form } = useAppSelector(selectRegister);
     return (
         <>
             <h2 className="text-lg font-bold mb-3">Personal Details</h2>
             <div className="grid md:grid-cols-2 gap-4">
                 <div>
                     <FieldLabel>Title</FieldLabel>
-                    <Select value={form.title} onChange={(e) => dispatch(patchForm({title: e.target.value as any}))}>
+                    <Select
+                        value={form.title}
+                        onChange={(e) => dispatch(patchForm({ title: e.target.value as any }))}
+                    >
                         {TITLES.map((t) => (
                             <option key={t}>{t}</option>
                         ))}
                     </Select>
                 </div>
+
                 <div>
                     <FieldLabel>First Name</FieldLabel>
-                    <Input value={form.firstName} onChange={(e) => dispatch(patchForm({firstName: e.target.value}))}/>
+                    <Input
+                        value={form.firstName}
+                        onChange={(e) => dispatch(patchForm({ firstName: e.target.value }))}
+                    />
                 </div>
+
                 <div>
                     <FieldLabel>Last Name</FieldLabel>
-                    <Input value={form.lastName} onChange={(e) => dispatch(patchForm({lastName: e.target.value}))}/>
+                    <Input
+                        value={form.lastName}
+                        onChange={(e) => dispatch(patchForm({ lastName: e.target.value }))}
+                    />
                 </div>
+
                 <div className="md:col-span-2">
                     <FieldLabel>Date of Birth</FieldLabel>
                     <div className="grid grid-cols-3 gap-2">
                         <Select
                             value={form.dob.day}
-                            onChange={(e) => dispatch(patchForm({dob: {...form.dob, day: Number(e.target.value)}}))}
+                            onChange={(e) =>
+                                dispatch(patchForm({ dob: { ...form.dob, day: Number(e.target.value) } }))
+                            }
                         >
-                            {Array.from({length: 31}, (_, i) => i + 1).map((d) => (
+                            {Array.from({ length: 31 }, (_, i) => i + 1).map((d) => (
                                 <option key={d} value={d}>
                                     {d}
                                 </option>
@@ -227,9 +300,11 @@ function Step2() {
                         </Select>
                         <Select
                             value={form.dob.month}
-                            onChange={(e) => dispatch(patchForm({dob: {...form.dob, month: Number(e.target.value)}}))}
+                            onChange={(e) =>
+                                dispatch(patchForm({ dob: { ...form.dob, month: Number(e.target.value) } }))
+                            }
                         >
-                            {Array.from({length: 12}, (_, i) => i + 1).map((m) => (
+                            {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
                                 <option key={m} value={m}>
                                     {String(m).padStart(2, '0')}
                                 </option>
@@ -237,9 +312,11 @@ function Step2() {
                         </Select>
                         <Select
                             value={form.dob.year}
-                            onChange={(e) => dispatch(patchForm({dob: {...form.dob, year: Number(e.target.value)}}))}
+                            onChange={(e) =>
+                                dispatch(patchForm({ dob: { ...form.dob, year: Number(e.target.value) } }))
+                            }
                         >
-                            {Array.from({length: 80}, (_, i) => 2025 - i).map((y) => (
+                            {Array.from({ length: 80 }, (_, i) => new Date().getFullYear() - i).map((y) => (
                                 <option key={y} value={y}>
                                     {y}
                                 </option>
@@ -254,7 +331,7 @@ function Step2() {
 
 function Step3() {
     const dispatch = useAppDispatch();
-    const {form} = useAppSelector(selectRegister);
+    const { form } = useAppSelector(selectRegister);
     const [show, setShow] = useState(false);
     const strong = form.password.length >= 8;
 
@@ -264,8 +341,11 @@ function Step3() {
             <div className="space-y-4">
                 <div>
                     <FieldLabel>Username</FieldLabel>
-                    <Input value={form.username} onChange={(e) => dispatch(patchForm({username: e.target.value}))}/>
-                    {form.username && <OKBadge/>}
+                    <Input
+                        value={form.username}
+                        onChange={(e) => dispatch(patchForm({ username: e.target.value }))}
+                    />
+                    {form.username && <OKBadge />}
                 </div>
 
                 <div>
@@ -274,7 +354,7 @@ function Step3() {
                         <Input
                             type={show ? 'text' : 'password'}
                             value={form.password}
-                            onChange={(e) => dispatch(patchForm({password: e.target.value}))}
+                            onChange={(e) => dispatch(patchForm({ password: e.target.value }))}
                             className="pr-10"
                             aria-describedby="password-help"
                         />
@@ -289,11 +369,23 @@ function Step3() {
                         </button>
                     </div>
                     <div id="password-help" className="mt-2 text-sm">
-                        <p className={strong ? 'text-[var(--brand)]' : 'text-gray-400'}>✔ At least 8 characters</p>
-                        <p className={/[A-Za-z]/.test(form.password) && /\d/.test(form.password) ? 'text-[var(--brand)]' : 'text-gray-400'}>
+                        <p className={okClass(strong)}>✔ At least 8 characters</p>
+                        <p
+                            className={
+                                /[A-Za-z]/.test(form.password) && /\d/.test(form.password)
+                                    ? 'text-[var(--brand)]'
+                                    : 'text-gray-400'
+                            }
+                        >
                             ✔ Contains letters and numbers
                         </p>
-                        <p className={!form.username || !form.password.includes(form.username) ? 'text-[var(--brand)]' : 'text-gray-400'}>
+                        <p
+                            className={
+                                !form.username || !form.password.includes(form.username)
+                                    ? 'text-[var(--brand)]'
+                                    : 'text-gray-400'
+                            }
+                        >
                             ✔ Does not contain your username
                         </p>
                     </div>
@@ -301,9 +393,12 @@ function Step3() {
 
                 <div>
                     <FieldLabel>Email</FieldLabel>
-                    <Input type="email" value={form.email}
-                           onChange={(e) => dispatch(patchForm({email: e.target.value}))}/>
-                    {form.email && /^[^@]+@[^@]+\.[^@]+$/.test(form.email) && <OKBadge/>}
+                    <Input
+                        type="text" // custom validation; avoid built-in browser validation
+                        value={form.email}
+                        onChange={(e) => dispatch(patchForm({ email: e.target.value }))}
+                    />
+                    {form.email && emailRx.test(form.email) && <OKBadge />}
                 </div>
             </div>
         </>
@@ -312,16 +407,24 @@ function Step3() {
 
 function Step4() {
     const dispatch = useAppDispatch();
-    const {form} = useAppSelector(selectRegister);
+    const { form } = useAppSelector(selectRegister);
     return (
         <>
             <h2 className="text-lg font-bold mb-3">Contact Details</h2>
             <div className="space-y-4">
                 <div>
-                    <FieldLabel>Phone (optional)</FieldLabel>
-                    <Input inputMode="tel" value={form.phone}
-                           onChange={(e) => dispatch(patchForm({phone: e.target.value}))}/>
+                    <FieldLabel>Phone {/** optional */}</FieldLabel>
+                    <Input
+                        inputMode="tel"
+                        value={form.phone}
+                        onChange={(e) => dispatch(patchForm({ phone: e.target.value }))}
+                        placeholder="+44 7123 456 789"
+                    />
+                    {form.phone && !isValidPhone(form.phone) && (
+                        <p className="text-sm text-red-600 mt-1">Please enter a valid phone number.</p>
+                    )}
                 </div>
+
                 <div className="text-sm text-gray-600">
                     We will use <strong>{form.email || 'your email'}</strong> to send account updates.
                 </div>
