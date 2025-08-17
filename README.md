@@ -1,4 +1,7 @@
-# Betway Landing Page - Next.js + TypeScript
+# Betway Landing Page - Next.js + Redux + TypeScript
+
+## Demo in action:
+(https://bet-way-alfonso.vercel.app/)
 
 ## Getting Started
 ```bash
@@ -6,8 +9,8 @@ npm install
 npm run dev
 ```
 
-## Features
-- Next.js + TypeScript + SCSS
-- API endpoint for text content
-- Header, Navigation, Login modal
-- Basic validation & mock sign-in request
+## Extra Features
+- Multistep registration form
+- Used genAI to create desktop version of the background
+- Fireworks animation component for mobile
+

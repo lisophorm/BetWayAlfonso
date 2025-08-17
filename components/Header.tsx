@@ -5,6 +5,7 @@ import Image from 'next/image';
 import {useAppDispatch, useAppSelector} from '@/store/hooks';
 import {fetchContent, selectContent} from '@/store/slices/contentSlice';
 import Link from "next/link";
+import {keyify} from "../lib/utils";
 
 type HeaderProps = {
     onLoginClick: () => void;
@@ -19,9 +20,6 @@ export default function Header({onLoginClick, onTabChange}: HeaderProps) {
     useEffect(() => {
         dispatch(fetchContent());
     }, [dispatch]);
-
-    const keyify = (label: string) =>
-        label.toLowerCase().replace(/\s*&\s*/g, 'and').replace(/\s+/g, '');
 
     const handleTab = (label: string) => {
         const key = keyify(label);
