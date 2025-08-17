@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../';
-import {RegisterState, StepKey} from "../../content/types/type.RegistrationStep";
-import {RegistrationPayload} from "../../content/types/type.Registration";
+import {RegisterState, RegistrationPayload, StepKey} from "../../content/types/type.RegistrationStep";
 
 export const submitRegistrationThunk = createAsyncThunk<
     { accountId: string; status: 'created' },
@@ -25,7 +24,7 @@ export const submitRegistrationThunk = createAsyncThunk<
 const initialState: RegisterState = {
     step: 1,
     form: {
-        offer: 'none',
+        offer: '',        // <- start with nothing selected so validation triggers
         title: 'Mr',
         firstName: '',
         lastName: '',
@@ -37,6 +36,8 @@ const initialState: RegisterState = {
     },
     status: 'idle',
 };
+
+export const registerInitialState: RegisterState = initialState;
 
 const slice = createSlice({
     name: 'register',
@@ -55,5 +56,5 @@ const slice = createSlice({
 });
 
 export const { setStep, patchForm } = slice.actions;
-export const selectRegister = (st: RootState) => st.register;
+export const selectRegister = (st: RootState) => st.register ?? registerInitialState;
 export default slice.reducer;

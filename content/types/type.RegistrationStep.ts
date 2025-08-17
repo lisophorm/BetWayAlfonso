@@ -6,7 +6,7 @@ export type RegistrationStep = {
 export type StepKey = 1 | 2 | 3 | 4;
 
 export type RegistrationPayload = {
-    offer: 'sports' | 'none';
+    offer: 'sports' | 'none' | '';
     title: 'Mr' | 'Ms' | 'Mrs' | 'Mx' | 'Dr';
     firstName: string;
     lastName: string;

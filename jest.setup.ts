@@ -1,15 +1,23 @@
+// jest.setup.ts
 import '@testing-library/jest-dom';
+import React from 'react';
 
-// Mock Next/Image to behave like a normal img
-jest.mock('next/image', () => (props: any) => <img {...props} />);
 
-// Optional: silence console.error for act() warnings if any noisy libs appear
-const err = console.error;
+jest.mock('next/image', () => {
+    return function NextImage(props: any) {
+        return React.createElement('img', props);
+    };
+});
+
+// (Optional) silence act() warnings if a lib is noisy
+const originalError = console.error;
 beforeAll(() => {
     console.error = (...args: any[]) => {
         const msg = args[0] || '';
         if (typeof msg === 'string' && msg.includes('act(')) return;
-        err(...args);
+        originalError(...args);
     };
 });
-afterAll(() => { console.error = err; });
+afterAll(() => {
+    console.error = originalError;
+});

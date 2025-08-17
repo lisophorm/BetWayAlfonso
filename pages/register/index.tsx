@@ -33,7 +33,7 @@ export default function RegisterPage() {
             if (!form.offer) return 'Please select a welcome offer or choose no offer.';
         }
         if (step === 2) {
-            if (!form.firstName || !form.lastName) return 'Please fill first and last name.';
+            if (!form.firstName || !form.lastName) return 'Please fill first and last name';
             const { day, month, year } = form.dob || { day: 0, month: 0, year: 0 };
             if (!day || !month || !year) return 'Please complete your date of birth.';
             if (!isAtLeast18(form.dob)) return 'You must be at least 18 years old to register.';
@@ -191,37 +191,76 @@ function okClass(ok: boolean) {
 function Step1() {
     const dispatch = useAppDispatch();
     const { form } = useAppSelector(selectRegister);
+
+    const choose = (offer: 'sports' | 'none') => dispatch(patchForm({ offer }));
+
     return (
         <>
             <h2 className="text-lg font-bold mb-3">Choose the Welcome Offer</h2>
-            <div className="border rounded-md overflow-hidden">
-                <label className="flex items-start gap-3 p-4 border-b cursor-pointer">
+            <div className="border rounded-md overflow-hidden" role="radiogroup" aria-label="Welcome offer">
+                {/* SPORTS */}
+                <label
+                    className="flex items-start gap-3 p-4 border-b cursor-pointer"
+                    htmlFor="offer-sports"
+                    onClick={() => choose('sports')}
+                    data-testid="offer-sports-label"
+                >
                     <input
+                        id="offer-sports"
+                        name="welcome-offer"
                         type="radio"
+                        value="sports"
                         checked={form.offer === 'sports'}
-                        onChange={() => dispatch(patchForm({ offer: 'sports' }))}
+                        onChange={() => choose('sports')}
+                        aria-label="Sports"
                     />
                     <div className="grow">
-                        <span className="font-bold text-[var(--brand)]">Sports</span>
-                        <p className="text-xs opacity-70 mt-1">
-                            Upto £30 Matched Free Bet + 100 Free Spins
-                        </p>
+            <span
+                className="font-bold text-[var(--brand)]"
+                role="button"
+                tabIndex={0}
+                onClick={() => choose('sports')}
+                onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && choose('sports')}
+            >
+              Sports
+            </span>
+                        <p className="text-xs opacity-70 mt-1">Upto £30 Matched Free Bet + 100 Free Spins</p>
                     </div>
                 </label>
-                <label className="flex items-start gap-3 p-4 cursor-pointer">
+
+                {/* NONE */}
+                <label
+                    className="flex items-start gap-3 p-4 cursor-pointer"
+                    htmlFor="offer-none"
+                    onClick={() => choose('none')}
+                    data-testid="offer-none-label"
+                >
                     <input
+                        id="offer-none"
+                        name="welcome-offer"
                         type="radio"
+                        value="none"
                         checked={form.offer === 'none'}
-                        onChange={() => dispatch(patchForm({ offer: 'none' }))}
+                        onChange={() => choose('none')}
+                        aria-label="No Welcome Offer"
                     />
                     <div className="grow">
-                        <span className="font-semibold">No Welcome Offer</span>
+            <span
+                className="font-semibold"
+                role="button"
+                tabIndex={0}
+                onClick={() => choose('none')}
+                onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && choose('none')}
+            >
+              No Welcome Offer
+            </span>
                     </div>
                 </label>
             </div>
         </>
     );
 }
+
 
 function Step2() {
     const dispatch = useAppDispatch();

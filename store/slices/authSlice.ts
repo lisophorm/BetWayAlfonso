@@ -22,6 +22,8 @@ export const signInThunk = createAsyncThunk<SignInResponse, { email: string; pas
 
 const initialState: AuthState = { user: null, status: 'idle' };
 
+export const authInitialState: AuthState = initialState;
+
 const slice = createSlice({
     name: 'auth',
     initialState,
@@ -34,5 +36,5 @@ const slice = createSlice({
 });
 
 export const { signOut } = slice.actions;
-export const selectAuth = (st: RootState) => st.auth;
+export const selectAuth = (st: RootState) => st.auth ?? authInitialState;
 export default slice.reducer;

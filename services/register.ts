@@ -1,8 +1,8 @@
 // /services/register.ts
 
 
-import {RegistrationPayload} from "../store/slices/registerSlice";
 import {RegistrationResponse} from "../content/types/type.Registration";
+import {RegistrationPayload} from "../content/types/type.RegistrationStep";
 
 export async function submitRegistration(
     payload: RegistrationPayload

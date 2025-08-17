@@ -1,17 +1,19 @@
-import React, {PropsWithChildren} from 'react';
-import {Provider} from 'react-redux';
-import {configureStore} from '@reduxjs/toolkit';
-import {render} from '@testing-library/react';
-import auth from '@/store/slices/authSlice';
-import content from '@/store/slices/contentSlice';
-import register from '@/store/slices/registerSlice';
+import React, { PropsWithChildren } from 'react';
+import { Provider } from 'react-redux';
+import { render } from '@testing-library/react';
 
-export function renderWithStore(ui: React.ReactElement, preloadedState?: any) {
-    const store = configureStore({reducer: {auth, content, register}, preloadedState});
+import type { PreloadedState } from '@reduxjs/toolkit';
+import {AppStore, RootState, setupStore} from "@/store/index";
 
-    function Wrapper({children}: PropsWithChildren) {
+export function renderWithStore(
+    ui: React.ReactElement,
+    preloadedState?: PreloadedState<RootState>
+) {
+    const store: AppStore = setupStore(preloadedState);
+
+    function Wrapper({ children }: PropsWithChildren) {
         return <Provider store={store}>{children}</Provider>;
     }
 
-    return {store, ...render(ui, {wrapper: Wrapper})};
+    return { store, ...render(ui, { wrapper: Wrapper }) };
 }
