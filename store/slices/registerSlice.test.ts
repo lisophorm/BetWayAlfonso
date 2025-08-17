@@ -12,11 +12,10 @@ describe('registerSlice', () => {
     });
 
     test('submitRegistrationThunk posts form', async () => {
-        // @ts-ignore
         global.fetch = jest.fn().mockResolvedValue({ ok: true, json: async () => ({ accountId: 'z', status: 'created' }) });
         const dispatch = jest.fn();
         const getState = () => ({ register: reducer(undefined, patchForm({ firstName: 'John' }) as any) } as any);
-        const action: any = await submitRegistrationThunk()(dispatch, getState, undefined);
+        const action = await submitRegistrationThunk()(dispatch, getState, undefined);
         expect(action.type).toMatch(/fulfilled/);
     });
 });

@@ -16,15 +16,15 @@ import {TitleOption} from "../../content/types/type.TitleOption";
 ========================= */
 export default function RegisterPage() {
     const dispatch = useAppDispatch();
-    const { step, form, status } = useAppSelector(selectRegister);
+    const {step, form, status} = useAppSelector(selectRegister);
     const [error, setError] = useState('');
 
     const steps = useMemo(
         () => [
-            { key: 1 as StepKey, label: 'Welcome Offer' },
-            { key: 2 as StepKey, label: 'Personal Details' },
-            { key: 3 as StepKey, label: 'Account Information' },
-            { key: 4 as StepKey, label: 'Contact Details' },
+            {key: 1 as StepKey, label: 'Welcome Offer'},
+            {key: 2 as StepKey, label: 'Personal Details'},
+            {key: 3 as StepKey, label: 'Account Information'},
+            {key: 4 as StepKey, label: 'Contact Details'},
         ],
         []
     );
@@ -35,7 +35,7 @@ export default function RegisterPage() {
         }
         if (step === 2) {
             if (!form.firstName || !form.lastName) return 'Please fill first and last name';
-            const { day, month, year } = form.dob || { day: 0, month: 0, year: 0 };
+            const {day, month, year} = form.dob || {day: 0, month: 0, year: 0};
             if (!day || !month || !year) return 'Please complete your date of birth.';
             if (!isAtLeast18(form.dob)) return 'You must be at least 18 years old to register.';
         }
@@ -110,7 +110,8 @@ export default function RegisterPage() {
         >
           {s.key}
         </span>
-                                <span className={['text-sm text-center', active ? 'font-semibold' : 'opacity-70'].join(' ')}>
+                                <span
+                                    className={['text-sm text-center', active ? 'font-semibold' : 'opacity-70'].join(' ')}>
           {s.label}
         </span>
                             </li>
@@ -122,10 +123,10 @@ export default function RegisterPage() {
                 <section className="bg-white rounded-lg shadow-sm p-4 md:p-6">
                     {error && <p className="text-red-600 mb-3">{error}</p>}
 
-                    {step === 1 && <Step1 />}
-                    {step === 2 && <Step2 />}
-                    {step === 3 && <Step3 />}
-                    {step === 4 && <Step4 />}
+                    {step === 1 && <Step1/>}
+                    {step === 2 && <Step2/>}
+                    {step === 3 && <Step3/>}
+                    {step === 4 && <Step4/>}
 
                     <div className="mt-6 flex items-center justify-between">
                         <button
@@ -152,9 +153,10 @@ export default function RegisterPage() {
 /* =========================
    Small UI helpers
 ========================= */
-function FieldLabel({ children }: { children: React.ReactNode }) {
+function FieldLabel({children}: { children: React.ReactNode }) {
     return <label className="block text-gray-700 mb-1 font-semibold">{children}</label>;
 }
+
 function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
     return (
         <input
@@ -166,6 +168,7 @@ function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
         />
     );
 }
+
 function Select(props: React.SelectHTMLAttributes<HTMLSelectElement>) {
     return (
         <select
@@ -177,11 +180,13 @@ function Select(props: React.SelectHTMLAttributes<HTMLSelectElement>) {
         />
     );
 }
+
 function OKBadge() {
     return (
         <span className="inline-block ml-2 align-middle text-[var(--brand)] font-bold">✔</span>
     );
 }
+
 function okClass(ok: boolean) {
     return ok ? 'text-[var(--brand)]' : 'text-gray-400';
 }
@@ -191,9 +196,9 @@ function okClass(ok: boolean) {
 ========================= */
 function Step1() {
     const dispatch = useAppDispatch();
-    const { form } = useAppSelector(selectRegister);
+    const {form} = useAppSelector(selectRegister);
 
-    const choose = (offer: 'sports' | 'none') => dispatch(patchForm({ offer }));
+    const choose = (offer: 'sports' | 'none') => dispatch(patchForm({offer}));
 
     return (
         <>
@@ -265,7 +270,7 @@ function Step1() {
 
 function Step2() {
     const dispatch = useAppDispatch();
-    const { form } = useAppSelector(selectRegister);
+    const {form} = useAppSelector(selectRegister);
     return (
         <>
             <h2 className="text-lg font-bold mb-3">Personal Details</h2>
@@ -274,7 +279,7 @@ function Step2() {
                     <FieldLabel>Title</FieldLabel>
                     <Select
                         value={form.title}
-                        onChange={(e) => dispatch(patchForm({ title: e.target.value as TitleOption }))}
+                        onChange={(e) => dispatch(patchForm({title: e.target.value as TitleOption}))}
                     >
                         {TITLES.map((t) => (
                             <option key={t}>{t}</option>
@@ -286,7 +291,7 @@ function Step2() {
                     <FieldLabel>First Name</FieldLabel>
                     <Input
                         value={form.firstName}
-                        onChange={(e) => dispatch(patchForm({ firstName: e.target.value }))}
+                        onChange={(e) => dispatch(patchForm({firstName: e.target.value}))}
                     />
                 </div>
 
@@ -294,7 +299,7 @@ function Step2() {
                     <FieldLabel>Last Name</FieldLabel>
                     <Input
                         value={form.lastName}
-                        onChange={(e) => dispatch(patchForm({ lastName: e.target.value }))}
+                        onChange={(e) => dispatch(patchForm({lastName: e.target.value}))}
                     />
                 </div>
 
@@ -304,10 +309,10 @@ function Step2() {
                         <Select
                             value={form.dob.day}
                             onChange={(e) =>
-                                dispatch(patchForm({ dob: { ...form.dob, day: Number(e.target.value) } }))
+                                dispatch(patchForm({dob: {...form.dob, day: Number(e.target.value)}}))
                             }
                         >
-                            {Array.from({ length: 31 }, (_, i) => i + 1).map((d) => (
+                            {Array.from({length: 31}, (_, i) => i + 1).map((d) => (
                                 <option key={d} value={d}>
                                     {d}
                                 </option>
@@ -316,10 +321,10 @@ function Step2() {
                         <Select
                             value={form.dob.month}
                             onChange={(e) =>
-                                dispatch(patchForm({ dob: { ...form.dob, month: Number(e.target.value) } }))
+                                dispatch(patchForm({dob: {...form.dob, month: Number(e.target.value)}}))
                             }
                         >
-                            {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
+                            {Array.from({length: 12}, (_, i) => i + 1).map((m) => (
                                 <option key={m} value={m}>
                                     {String(m).padStart(2, '0')}
                                 </option>
@@ -328,10 +333,10 @@ function Step2() {
                         <Select
                             value={form.dob.year}
                             onChange={(e) =>
-                                dispatch(patchForm({ dob: { ...form.dob, year: Number(e.target.value) } }))
+                                dispatch(patchForm({dob: {...form.dob, year: Number(e.target.value)}}))
                             }
                         >
-                            {Array.from({ length: 80 }, (_, i) => new Date().getFullYear() - i).map((y) => (
+                            {Array.from({length: 80}, (_, i) => new Date().getFullYear() - i).map((y) => (
                                 <option key={y} value={y}>
                                     {y}
                                 </option>
@@ -346,7 +351,7 @@ function Step2() {
 
 function Step3() {
     const dispatch = useAppDispatch();
-    const { form } = useAppSelector(selectRegister);
+    const {form} = useAppSelector(selectRegister);
     const [show, setShow] = useState(false);
     const strong = form.password.length >= 8;
 
@@ -358,9 +363,9 @@ function Step3() {
                     <FieldLabel>Username</FieldLabel>
                     <Input
                         value={form.username}
-                        onChange={(e) => dispatch(patchForm({ username: e.target.value }))}
+                        onChange={(e) => dispatch(patchForm({username: e.target.value}))}
                     />
-                    {form.username && <OKBadge />}
+                    {form.username && <OKBadge/>}
                 </div>
 
                 <div>
@@ -369,7 +374,7 @@ function Step3() {
                         <Input
                             type={show ? 'text' : 'password'}
                             value={form.password}
-                            onChange={(e) => dispatch(patchForm({ password: e.target.value }))}
+                            onChange={(e) => dispatch(patchForm({password: e.target.value}))}
                             className="pr-10"
                             aria-describedby="password-help"
                         />
@@ -411,9 +416,9 @@ function Step3() {
                     <Input
                         type="text" // custom validation; avoid built-in browser validation
                         value={form.email}
-                        onChange={(e) => dispatch(patchForm({ email: e.target.value }))}
+                        onChange={(e) => dispatch(patchForm({email: e.target.value}))}
                     />
-                    {form.email && emailRx.test(form.email) && <OKBadge />}
+                    {form.email && emailRx.test(form.email) && <OKBadge/>}
                 </div>
             </div>
         </>
@@ -422,7 +427,7 @@ function Step3() {
 
 function Step4() {
     const dispatch = useAppDispatch();
-    const { form } = useAppSelector(selectRegister);
+    const {form} = useAppSelector(selectRegister);
     return (
         <>
             <h2 className="text-lg font-bold mb-3">Contact Details</h2>
@@ -432,7 +437,7 @@ function Step4() {
                     <Input
                         inputMode="tel"
                         value={form.phone}
-                        onChange={(e) => dispatch(patchForm({ phone: e.target.value }))}
+                        onChange={(e) => dispatch(patchForm({phone: e.target.value}))}
                         placeholder="+44 7123 456 789"
                     />
                     {form.phone && !isValidPhone(form.phone) && (
