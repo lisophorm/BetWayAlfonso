@@ -1,33 +1,23 @@
-// /pages/register/index.tsx
 'use client';
 
 import { useMemo, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import {RegistrationPayload, submitRegistration} from "../../services/register";
 
-type StepKey = 1 | 2 | 3 | 4;
+import {
+    selectRegister,
+    setStep,
+    patchForm,
+    submitRegistrationThunk,
+    type StepKey,
+} from '../../store/slices/registerSlice';
+import {useAppDispatch, useAppSelector} from "../../store/hooks";
 
 const TITLES = ['Mr', 'Ms', 'Mrs', 'Mx', 'Dr'] as const;
 
 export default function RegisterPage() {
-    const [step, setStep] = useState<StepKey>(1);
-    const [busy, setBusy] = useState(false);
-    const [error, setError] = useState<string>('');
-
-    // form state
-    const [offer, setOffer] = useState<'sports' | 'none'>('none');
-
-    const [title, setTitle] = useState<typeof TITLES[number]>('Mr');
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [dob, setDob] = useState({ day: 1, month: 1, year: 1990 });
-
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [email, setEmail] = useState('');
-
-    const [phone, setPhone] = useState('');
+    const dispatch = useAppDispatch();
+    const { step, form, status, error } = useAppSelector(selectRegister);
 
     const steps = useMemo(
         () => [
@@ -39,65 +29,33 @@ export default function RegisterPage() {
         []
     );
 
-    function next() {
-        setError('');
-        if (step === 1) return setStep(2);
-        if (step === 2) {
-            if (!firstName || !lastName) return setError('Please fill first and last name.');
-            return setStep(3);
-        }
-        if (step === 3) {
-            if (!username || password.length < 8 || !/^[^@]+@[^@]+\.[^@]+$/.test(email))
-                return setError('Please enter a username, a strong password (8+) and a valid email.');
-            return setStep(4);
-        }
-        if (step === 4) return handleSubmit();
-    }
-
-    function prev() {
-        setError('');
-        if (step > 1) setStep((s) => (s - 1) as StepKey);
-    }
-
-    async function handleSubmit() {
-        setBusy(true);
-        setError('');
-        const payload: RegistrationPayload = {
-            offer,
-            title,
-            firstName,
-            lastName,
-            dob,
-            username,
-            password,
-            email,
-            phone,
-        };
-        try {
-            const res = await submitRegistration(payload);
-            console.log('Registration complete:', { payload, res }); // <- per your spec
-            alert('Registration complete! Check the console.');
-        } catch (e) {
-            setError('Registration failed. Please try again.');
-        } finally {
-            setBusy(false);
-        }
-    }
+    const next = () => {
+        if (step < 4) dispatch(setStep((step + 1) as StepKey));
+        else dispatch(submitRegistrationThunk());
+    };
+    const prev = () => {
+        if (step > 1) dispatch(setStep((step - 1) as StepKey));
+    };
 
     return (
         <div className="min-h-screen bg-[#f5f5f5]">
-            {/* Simple header with logo link back home */}
             <header className="bg-black text-white">
                 <div className="container mx-auto px-4 py-3 flex items-center gap-4">
                     <Link href="/" className="inline-flex">
-                        <Image src="/images/betway-logo.svg" alt="Betway" width={112} height={28} className="invert" />
+                        <Image
+                            src="/images/betway-logo.svg"
+                            alt="Betway"
+                            width={112}
+                            height={28}
+                            className="invert"
+                        />
                     </Link>
                     <span className="text-sm opacity-80">Create your account</span>
                 </div>
             </header>
 
             <main className="container mx-auto px-4 py-6">
-                {/* Progress bar */}
+                {/* Progress */}
                 <ol className="relative grid grid-cols-4 gap-4 mb-6">
                     {steps.map((s, idx) => {
                         const active = s.key === step;
@@ -112,7 +70,9 @@ export default function RegisterPage() {
                 >
                   {s.key}
                 </span>
-                                <span className={['text-sm', active ? 'font-semibold' : 'opacity-70'].join(' ')}>{s.label}</span>
+                                <span className={['text-sm', active ? 'font-semibold' : 'opacity-70'].join(' ')}>
+                  {s.label}
+                </span>
                                 {idx < steps.length - 1 && (
                                     <span className="absolute left-0 right-0 top-3.5 -z-10 h-0.5 bg-gray-200"></span>
                                 )}
@@ -125,44 +85,17 @@ export default function RegisterPage() {
                 <section className="bg-white rounded-lg shadow-sm p-4 md:p-6">
                     {error && <p className="text-red-600 mb-3">{error}</p>}
 
-                    {step === 1 && (
-                        <Step1 offer={offer} setOffer={setOffer} />
-                    )}
-
-                    {step === 2 && (
-                        <Step2
-                            title={title}
-                            setTitle={setTitle}
-                            firstName={firstName}
-                            setFirstName={setFirstName}
-                            lastName={lastName}
-                            setLastName={setLastName}
-                            dob={dob}
-                            setDob={setDob}
-                        />
-                    )}
-
-                    {step === 3 && (
-                        <Step3
-                            username={username}
-                            setUsername={setUsername}
-                            password={password}
-                            setPassword={setPassword}
-                            email={email}
-                            setEmail={setEmail}
-                        />
-                    )}
-
-                    {step === 4 && (
-                        <Step4 phone={phone} setPhone={setPhone} email={email} />
-                    )}
+                    {step === 1 && <Step1 />}
+                    {step === 2 && <Step2 />}
+                    {step === 3 && <Step3 />}
+                    {step === 4 && <Step4 />}
 
                     <div className="mt-6 flex items-center justify-between">
-                        <button className="btn btn-secondary" onClick={prev} disabled={step === 1 || busy}>
+                        <button className="btn btn-secondary" onClick={prev} disabled={step === 1 || status === 'submitting'}>
                             Back
                         </button>
-                        <button className="btn btn-primary" onClick={next} disabled={busy}>
-                            {step === 4 ? (busy ? 'Submitting…' : 'Finish') : 'Next'}
+                        <button className="btn btn-primary" onClick={next} disabled={status === 'submitting'}>
+                            {step === 4 ? (status === 'submitting' ? 'Submitting…' : 'Finish') : 'Next'}
                         </button>
                     </div>
                 </section>
@@ -171,12 +104,10 @@ export default function RegisterPage() {
     );
 }
 
-/* ============== STEP PANELS ============== */
-
+/* ===== Helpers ===== */
 function FieldLabel({ children }: { children: React.ReactNode }) {
     return <label className="block text-gray-700 mb-1 font-semibold">{children}</label>;
 }
-
 function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
     return (
         <input
@@ -188,7 +119,6 @@ function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
         />
     );
 }
-
 function Select(props: React.SelectHTMLAttributes<HTMLSelectElement>) {
     return (
         <select
@@ -200,45 +130,37 @@ function Select(props: React.SelectHTMLAttributes<HTMLSelectElement>) {
         />
     );
 }
+function OKBadge() {
+    return <span className="inline-block ml-2 align-middle text-[var(--brand)] font-bold">✔</span>;
+}
+function okClass(ok: boolean) {
+    return ok ? 'text-[var(--brand)]' : 'text-gray-400';
+}
 
-/* Step 1 — Welcome Offer */
-function Step1({
-                   offer,
-                   setOffer,
-               }: {
-    offer: 'sports' | 'none';
-    setOffer: (v: 'sports' | 'none') => void;
-}) {
+/* ===== Steps ===== */
+function Step1() {
+    const dispatch = useAppDispatch();
+    const { form } = useAppSelector(selectRegister);
     return (
         <>
-            <h2 className="text-lg font-bold mb-3">Choose the Welcome Offer you would like to receive</h2>
-
+            <h2 className="text-lg font-bold mb-3">Choose the Welcome Offer</h2>
             <div className="border rounded-md overflow-hidden">
                 <label className="flex items-start gap-3 p-4 border-b cursor-pointer">
                     <input
                         type="radio"
-                        className="mt-1"
-                        name="offer"
-                        checked={offer === 'sports'}
-                        onChange={() => setOffer('sports')}
+                        checked={form.offer === 'sports'}
+                        onChange={() => dispatch(patchForm({ offer: 'sports' }))}
                     />
                     <div className="grow">
-                        <div className="flex items-center justify-between">
-                            <span className="font-bold text-[var(--brand)]">sports</span>
-                            <span className="text-sm underline opacity-80">View all offers</span>
-                        </div>
-                        <p className="mt-1">Upto £30 Matched Free Bet if your first Acca loses + 100 Free Spins</p>
-                        <p className="text-xs opacity-70 mt-1">Full Terms apply</p>
+                        <span className="font-bold text-[var(--brand)]">Sports</span>
+                        <p className="text-xs opacity-70 mt-1">Upto £30 Matched Free Bet + 100 Free Spins</p>
                     </div>
                 </label>
-
                 <label className="flex items-start gap-3 p-4 cursor-pointer">
                     <input
                         type="radio"
-                        className="mt-1"
-                        name="offer"
-                        checked={offer === 'none'}
-                        onChange={() => setOffer('none')}
+                        checked={form.offer === 'none'}
+                        onChange={() => dispatch(patchForm({ offer: 'none' }))}
                     />
                     <div className="grow">
                         <span className="font-semibold">No Welcome Offer</span>
@@ -248,132 +170,91 @@ function Step1({
         </>
     );
 }
-
-/* Step 2 — Personal Details */
-function Step2({
-                   title, setTitle,
-                   firstName, setFirstName,
-                   lastName, setLastName,
-                   dob, setDob,
-               }: {
-    title: typeof TITLES[number];
-    setTitle: (v: typeof TITLES[number]) => void;
-    firstName: string; setFirstName: (v: string) => void;
-    lastName: string; setLastName: (v: string) => void;
-    dob: { day: number; month: number; year: number }; setDob: (v: { day: number; month: number; year: number }) => void;
-}) {
+function Step2() {
+    const dispatch = useAppDispatch();
+    const { form } = useAppSelector(selectRegister);
     return (
         <>
             <h2 className="text-lg font-bold mb-3">Personal Details</h2>
-
             <div className="grid md:grid-cols-2 gap-4">
                 <div>
                     <FieldLabel>Title</FieldLabel>
-                    <Select value={title} onChange={(e) => setTitle(e.target.value as any)}>
-                        {TITLES.map((t) => (<option key={t} value={t}>{t}</option>))}
+                    <Select value={form.title} onChange={(e) => dispatch(patchForm({ title: e.target.value as any }))}>
+                        {TITLES.map((t) => (
+                            <option key={t}>{t}</option>
+                        ))}
                     </Select>
                 </div>
-
                 <div>
                     <FieldLabel>First Name</FieldLabel>
-                    <Input value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+                    <Input value={form.firstName} onChange={(e) => dispatch(patchForm({ firstName: e.target.value }))} />
                 </div>
-
                 <div>
                     <FieldLabel>Last Name</FieldLabel>
-                    <Input value={lastName} onChange={(e) => setLastName(e.target.value)} />
-                </div>
-
-                <div className="md:col-span-2">
-                    <FieldLabel>Date of Birth</FieldLabel>
-                    <div className="grid grid-cols-3 gap-2">
-                        <Select value={dob.day} onChange={(e) => setDob({ ...dob, day: Number(e.target.value) })}>
-                            {Array.from({ length: 31 }, (_, i) => i + 1).map((d) => (<option key={d} value={d}>{d}</option>))}
-                        </Select>
-                        <Select value={dob.month} onChange={(e) => setDob({ ...dob, month: Number(e.target.value) })}>
-                            {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (<option key={m} value={m}>{String(m).padStart(2,'0')}</option>))}
-                        </Select>
-                        <Select value={dob.year} onChange={(e) => setDob({ ...dob, year: Number(e.target.value) })}>
-                            {Array.from({ length: 80 }, (_, i) => 2024 - i).map((y) => (<option key={y} value={y}>{y}</option>))}
-                        </Select>
-                    </div>
+                    <Input value={form.lastName} onChange={(e) => dispatch(patchForm({ lastName: e.target.value }))} />
                 </div>
             </div>
         </>
     );
 }
-
-/* Step 3 — Account Information */
-function Step3({
-                   username, setUsername,
-                   password, setPassword,
-                   email, setEmail,
-               }: {
-    username: string; setUsername: (v: string) => void;
-    password: string; setPassword: (v: string) => void;
-    email: string; setEmail: (v: string) => void;
-}) {
-    const strong = password.length >= 8;
+function Step3() {
+    const dispatch = useAppDispatch();
+    const { form } = useAppSelector(selectRegister);
+    const [show, setShow] = useState(false);
+    const strong = form.password.length >= 8;
     return (
         <>
             <h2 className="text-lg font-bold mb-3">Account Information</h2>
-
             <div className="space-y-4">
                 <div>
                     <FieldLabel>Username</FieldLabel>
-                    <Input value={username} onChange={(e) => setUsername(e.target.value)} />
-                    {username && <OKBadge />}
+                    <Input value={form.username} onChange={(e) => dispatch(patchForm({ username: e.target.value }))} />
                 </div>
-
                 <div>
                     <FieldLabel>Password</FieldLabel>
-                    <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                    <div className="relative">
+                        <Input
+                            type={show ? 'text' : 'password'}
+                            value={form.password}
+                            onChange={(e) => dispatch(patchForm({ password: e.target.value }))}
+                            className="pr-10"
+                        />
+                        <button
+                            type="button"
+                            onClick={() => setShow((s) => !s)}
+                            className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-black"
+                        >
+                            {show ? '🙈' : '👁️'}
+                        </button>
+                    </div>
                     <div className="mt-2 text-sm">
-                        <p className={okClass(strong)}>✔ Your password should be at least 8 characters.</p>
-                        <p className={okClass(/[A-Za-z]/.test(password) && /\d/.test(password))}>✔ Contains letters and numbers.</p>
-                        <p className={okClass(!username || !password.includes(username))}>✔ Does not contain your username.</p>
+                        <p className={okClass(strong)}>✔ At least 8 characters</p>
                     </div>
                 </div>
-
                 <div>
                     <FieldLabel>Email</FieldLabel>
-                    <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                    {email && /^[^@]+@[^@]+\.[^@]+$/.test(email) && <OKBadge />}
+                    <Input
+                        type="email"
+                        value={form.email}
+                        onChange={(e) => dispatch(patchForm({ email: e.target.value }))}
+                    />
                 </div>
             </div>
         </>
     );
 }
-
-/* Step 4 — Contact Details (minimal) */
-function Step4({
-                   phone, setPhone, email
-               }: {
-    phone: string; setPhone: (v: string) => void;
-    email: string;
-}) {
+function Step4() {
+    const dispatch = useAppDispatch();
+    const { form } = useAppSelector(selectRegister);
     return (
         <>
             <h2 className="text-lg font-bold mb-3">Contact Details</h2>
-
-            <div className="space-y-4">
-                <div>
-                    <FieldLabel>Phone (optional)</FieldLabel>
-                    <Input inputMode="tel" value={phone} onChange={(e) => setPhone(e.target.value)} />
-                </div>
-
-                <div className="text-sm text-gray-600">
-                    We will use <strong>{email || 'your email'}</strong> to send account updates.
-                </div>
-            </div>
+            <FieldLabel>Phone (optional)</FieldLabel>
+            <Input
+                inputMode="tel"
+                value={form.phone}
+                onChange={(e) => dispatch(patchForm({ phone: e.target.value }))}
+            />
         </>
     );
-}
-
-/* small UI helpers */
-function OKBadge() {
-    return <span className="inline-block ml-2 align-middle text-[var(--brand)] font-bold">✔</span>;
-}
-function okClass(ok: boolean) {
-    return ok ? 'text-[var(--brand)]' : 'text-gray-400';
 }

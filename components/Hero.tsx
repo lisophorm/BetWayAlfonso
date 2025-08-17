@@ -2,6 +2,7 @@
 
 import {useEffect, useState} from 'react';
 import type {Content} from '../content/types/type.content';
+import Link from "next/link";
 
 
 export default function Hero() {
@@ -32,13 +33,14 @@ export default function Hero() {
                         <h1 className="text-3xl md:text-5xl font-extrabold leading-tight max-w-2xl">                            {content.offerTitle}
                         </h1>
                         <p className="mt-3 text-lg md:text-2xl opacity-90 max-w-2xl">{content.offerSubtitle}</p>
-
-                        <button
-                            className="mt-6 inline-block px-6 py-3 rounded font-semibold"
-                            style={{background: 'var(--brand)'}}
-                        >
-                            {content.offerCTA}
-                        </button>
+                        <Link href="/register">
+                            <button
+                                className="mt-6 inline-block px-6 py-3 rounded font-semibold"
+                                style={{background: 'var(--brand)'}}
+                            >
+                                {content.offerCTA}
+                            </button>
+                        </Link>
                     </div>
                 </div>
             )}
@@ -55,9 +57,11 @@ export default function Hero() {
                         {content.offerSubtitle && (
                             <p className="mt-2 text-sm opacity-90">{content.offerSubtitle}</p>
                         )}
-                        <button className="btn btn-primary w-full mt-3">
-                            {content.offerCTA || 'Join'}
-                        </button>
+                        <Link href="/register">
+                            <button className="btn btn-primary w-full mt-3">
+                                {content.offerCTA || 'Join'}
+                            </button>
+                        </Link>
                     </div>
                 </div>
             )}
