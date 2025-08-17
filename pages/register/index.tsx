@@ -3,14 +3,7 @@
 import {useMemo, useState} from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-
-import {
-    selectRegister,
-    setStep,
-    patchForm,
-    submitRegistrationThunk,
-    type StepKey,
-} from '../../store/slices/registerSlice';
+import StepKey, {patchForm, selectRegister, setStep, submitRegistrationThunk} from '../../store/slices/registerSlice';
 import {useAppDispatch, useAppSelector} from "../../store/hooks";
 import {TITLES} from "../../content/declarations/const.titles";
 import {RegistrationStep} from "../../content/types/type.RegistrationStep";
@@ -21,7 +14,7 @@ export default function RegisterPage() {
     const [error, setError] = useState('');
 
 
-    const steps:RegistrationStep[] = useMemo(
+    const steps: RegistrationStep[] = useMemo(
         () => [
             {key: 1, label: 'Welcome Offer'},
             {key: 2, label: 'Personal Details'},
