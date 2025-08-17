@@ -11,7 +11,21 @@ export default function Home() {
             <Header onLoginClick={() => setShowLogin(true)} onTabChange={() => {
             }}/>
             <main className="relative grow flex items-center isolation-auto">
-                {/* Background layer (behind everything, not clickable) */}
+                {/* Hires background (behind everything) */}
+                <div
+                    aria-hidden="true"
+                    className="
+      absolute inset-0 -z-20 pointer-events-none select-none
+    "
+                >
+                    <img
+                        src="/images/hires_background.png"
+                        alt=""
+                        className="w-full h-full object-cover object-center"
+                    />
+                </div>
+
+                {/* Foreground background layer (mobile/desktop hero switch) */}
                 <div
                     aria-hidden="true"
                     className="
@@ -20,7 +34,8 @@ export default function Home() {
       bg-top md:bg-center bg-cover
     "
                 />
-                <Hero/>
+
+                <Hero />
             </main>
 
             {showLogin && <LoginModal onClose={() => setShowLogin(false)}/>}

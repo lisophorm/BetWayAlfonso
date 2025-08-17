@@ -93,26 +93,26 @@ export default function RegisterPage() {
             {/* Main */}
             <main className="container mx-auto px-4 py-6">
                 {/* Progress */}
-                <ol className="relative grid grid-cols-4 gap-4 mb-6">
-                    {steps.map((s, idx) => {
+                <ol className="relative grid grid-cols-4 items-start mb-6">
+                    {/* connector line runs behind the circles */}
+                    <div className="absolute left-0 right-0 top-[14px] h-px bg-gray-200"></div>
+
+                    {steps.map((s) => {
                         const active = s.key === step;
                         const done = s.key < step;
                         return (
-                            <li key={s.key} className="flex items-center gap-3">
-                <span
-                    className={[
-                        'inline-flex items-center justify-center w-7 h-7 rounded-full text-white text-sm font-semibold',
-                        done ? 'bg-[var(--brand)]' : active ? 'bg-[var(--brand)]' : 'bg-gray-300',
-                    ].join(' ')}
-                >
-                  {s.key}
-                </span>
-                                <span className={['text-sm', active ? 'font-semibold' : 'opacity-70'].join(' ')}>
-                  {s.label}
-                </span>
-                                {idx < steps.length - 1 && (
-                                    <span className="absolute left-0 right-0 top-3.5 -z-10 h-0.5 bg-gray-200"></span>
-                                )}
+                            <li key={s.key} className="flex flex-col items-center gap-2">
+        <span
+            className={[
+                'z-10 inline-flex items-center justify-center w-7 h-7 rounded-full text-white text-sm font-semibold',
+                done ? 'bg-[var(--brand)]' : active ? 'bg-[var(--brand)]' : 'bg-gray-300',
+            ].join(' ')}
+        >
+          {s.key}
+        </span>
+                                <span className={['text-sm text-center', active ? 'font-semibold' : 'opacity-70'].join(' ')}>
+          {s.label}
+        </span>
                             </li>
                         );
                     })}
