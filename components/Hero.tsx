@@ -36,7 +36,7 @@ export default function Hero() {
                         <p className="mt-3 text-lg md:text-2xl opacity-90 max-w-2xl">{content.offerSubtitle}</p>
                         <Link href="/register">
                             <button
-                                className="mt-6 inline-block px-6 py-3 rounded font-semibold"
+                                className="button-jittery mt-6 inline-block px-6 py-3 rounded font-semibold"
                                 style={{background: 'var(--brand)'}}
                             >
                                 {content.offerCTA}
@@ -60,7 +60,9 @@ export default function Hero() {
                             <p className="mt-2 text-sm opacity-90">{content.offerSubtitle}</p>
                         )}
                         <Link href="/register">
-                            <button className="btn btn-primary w-full mt-3">
+                            <button className="btn btn-primary w-full mt-3 button-jittery"
+                                    style={{background: 'var(--brand)'}}
+                            >
                                 {content.offerCTA || 'Join'}
                             </button>
                         </Link>
