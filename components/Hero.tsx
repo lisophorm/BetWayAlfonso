@@ -3,6 +3,7 @@
 import {useEffect, useState} from 'react';
 import type {Content} from '../content/types/type.content';
 import Link from "next/link";
+import FireworksCanvas from "../FireworksCanvas";
 
 
 export default function Hero() {
@@ -48,6 +49,7 @@ export default function Hero() {
             {content && (
                 <div className="md:hidden relative z-10">
                     <div className="cta-sticky interface-font">
+                        <FireworksCanvas active={true}/>
                         <p className="text-[10px] tracking-[0.12em] uppercase opacity-90">
                             NEW CUSTOMER OFFER – ULTIMATE MATCHDAY PACKAGE
                         </p>
