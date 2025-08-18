@@ -1,9 +1,9 @@
 // /pages/api/sign-in.ts
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type {NextApiRequest, NextApiResponse} from 'next';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== 'POST') {
-        return res.status(405).json({ message: 'Method Not Allowed' });
+        return res.status(405).json({message: 'Method Not Allowed'});
     }
 
     try {
@@ -11,7 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             'https://fn-uks-dev-eng-fe-mock-svc.azurewebsites.net/api/sign-in',
             {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(req.body),
             }
         );
@@ -20,6 +20,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(azureRes.status).json(data);
     } catch (err) {
         console.error(err);
-        return res.status(500).json({ message: 'Internal Server Error' });
+        return res.status(500).json({message: 'Internal Server Error'});
     }
 }

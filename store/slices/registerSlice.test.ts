@@ -1,8 +1,8 @@
-import reducer, { patchForm, setStep, submitRegistrationThunk } from './registerSlice';
+import reducer, {patchForm, setStep, submitRegistrationThunk} from './registerSlice';
 
 describe('registerSlice', () => {
     test('patchForm updates nested fields', () => {
-        const state = reducer(undefined, patchForm({ firstName: 'John' }) as any);
+        const state = reducer(undefined, patchForm({firstName: 'John'}) as any);
         expect(state.form.firstName).toBe('John');
     });
 
@@ -12,9 +12,9 @@ describe('registerSlice', () => {
     });
 
     test('submitRegistrationThunk posts form', async () => {
-        global.fetch = jest.fn().mockResolvedValue({ ok: true, json: async () => ({ accountId: 'z', status: 'created' }) });
+        global.fetch = jest.fn().mockResolvedValue({ok: true, json: async () => ({accountId: 'z', status: 'created'})});
         const dispatch = jest.fn();
-        const getState = () => ({ register: reducer(undefined, patchForm({ firstName: 'John' }) as any) } as any);
+        const getState = () => ({register: reducer(undefined, patchForm({firstName: 'John'}) as any)} as any);
         const action = await submitRegistrationThunk()(dispatch, getState, undefined);
         expect(action.type).toMatch(/fulfilled/);
     });

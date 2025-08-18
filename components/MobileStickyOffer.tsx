@@ -4,7 +4,7 @@ import Link from 'next/link';
 import FireworksCanvas from "@/components/FireworksCanvas";
 import {Content} from "../content/types/type.content";
 
-export default function MobileStickyOffer({content}: { content: Content|null }) {
+export default function MobileStickyOffer({content}: { content: Content | null }) {
 
     if (!content) return null;
 

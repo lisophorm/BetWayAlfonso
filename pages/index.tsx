@@ -28,14 +28,14 @@ export default function Home() {
                 {/* Foreground background layer (mobile/desktop hero switch) */}
                 <div
                     aria-hidden="true"
-                    className="
-      absolute inset-0 -z-10 pointer-events-none select-none
-      bg-[url('/images/hunch-mobile.png')] md:bg-[url('/images/hunch-desktop.png')]
-      bg-top md:bg-center bg-cover
-    "
-                />
+                    className="absolute inset-0 -z-10 pointer-events-none select-none
+    bg-[url('/images/hunch-mobile.png')] md:bg-[url('/images/hunch-desktop.png')]
+    bg-no-repeat
+    bg-[position:top_center] md:bg-center
+    bg-[length:80%_auto] md:bg-cover"/>
 
-                <Hero />
+
+                <Hero/>
             </main>
 
             {showLogin && <LoginModal onClose={() => setShowLogin(false)}/>}

@@ -1,6 +1,6 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import type { RootState } from '../';
-import type { Content } from '../../content/types/type.content';
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import type {RootState} from '../';
+import type {Content} from '../../content/types/type.content';
 import {ContentState} from "../../content/types/type.ContentState";
 
 export const fetchContent = createAsyncThunk<Content>(
@@ -13,16 +13,24 @@ export const fetchContent = createAsyncThunk<Content>(
 );
 
 
-const initialState: ContentState = { data: null, status: 'idle' };
+const initialState: ContentState = {data: null, status: 'idle'};
 
 const slice = createSlice({
     name: 'content',
     initialState,
     reducers: {},
     extraReducers: (b) => {
-        b.addCase(fetchContent.pending, (s) => { s.status = 'loading'; });
-        b.addCase(fetchContent.fulfilled, (s, a) => { s.status = 'succeeded'; s.data = a.payload; });
-        b.addCase(fetchContent.rejected, (s, a) => { s.status = 'failed'; s.error = a.error.message; });
+        b.addCase(fetchContent.pending, (s) => {
+            s.status = 'loading';
+        });
+        b.addCase(fetchContent.fulfilled, (s, a) => {
+            s.status = 'succeeded';
+            s.data = a.payload;
+        });
+        b.addCase(fetchContent.rejected, (s, a) => {
+            s.status = 'failed';
+            s.error = a.error.message;
+        });
     }
 });
 

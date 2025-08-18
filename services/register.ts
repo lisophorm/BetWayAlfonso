@@ -10,7 +10,7 @@ export async function submitRegistration(
     // Call our mock API route to avoid CORS (and keep a single place to swap a real API later)
     const res = await fetch('/api/register', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(payload),
     });
     if (!res.ok) throw new Error('Registration failed');

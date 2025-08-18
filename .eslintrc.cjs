@@ -3,7 +3,7 @@ module.exports = {
     root: true,
     parser: '@typescript-eslint/parser',
     parserOptions: {
-        ecmaFeatures: { jsx: true },
+        ecmaFeatures: {jsx: true},
         sourceType: 'module',
         // omit "project" to avoid type-aware parsing issues across tools
     },

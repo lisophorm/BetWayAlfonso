@@ -1,16 +1,16 @@
 'use client';
 
-import { useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { selectAuth, signInThunk } from '../store/slices/authSlice';
-import { emailRx } from '../lib/validation';
+import {useState} from 'react';
+import {useAppDispatch, useAppSelector} from '../store/hooks';
+import {selectAuth, signInThunk} from '../store/slices/authSlice';
+import {emailRx} from '../lib/validation';
 import Link from 'next/link';
 
 type Props = { onClose: () => void };
 
-export default function LoginModal({ onClose }: Props) {
+export default function LoginModal({onClose}: Props) {
     const dispatch = useAppDispatch();
-    const { status } = useAppSelector(selectAuth);
+    const {status} = useAppSelector(selectAuth);
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -29,7 +29,7 @@ export default function LoginModal({ onClose }: Props) {
         if (msg) return setError(msg);
         setError('');
         try {
-            await dispatch(signInThunk({ email, password })).unwrap();
+            await dispatch(signInThunk({email, password})).unwrap();
             onClose();
         } catch {
             setError('Invalid credentials');
@@ -39,10 +39,11 @@ export default function LoginModal({ onClose }: Props) {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
             {/* Backdrop */}
-            <div className="absolute inset-0 bg-black/30" onClick={onClose} />
+            <div className="absolute inset-0 bg-black/30" onClick={onClose}/>
 
             {/* Panel: flush on mobile, rounded on md+ */}
-            <div className="relative bg-white shadow-xl overflow-hidden w-screen md:w-[92%] md:max-w-[640px] md:rounded-md">
+            <div
+                className="relative bg-white shadow-xl overflow-hidden w-screen md:w-[92%] md:max-w-[640px] md:rounded-md">
                 {/* Header */}
                 <div className="relative px-4 md:px-6 pt-5 pb-3 border-b">
                     <button
@@ -55,8 +56,9 @@ export default function LoginModal({ onClose }: Props) {
                     <h2 className="text-xl md:text-2xl font-semibold text-center">Login</h2>
                     <p className="mt-1 md:mt-2 text-sm md:text-base text-center">
                         New customer?{' '}
-                        <Link href="/register" className="text-brand-underline underline-offset-2 decoration-[1.5px] hover:opacity-80">
-                        Register here
+                        <Link href="/register"
+                              className="text-brand-underline underline-offset-2 decoration-[1.5px] hover:opacity-80">
+                            Register here
                         </Link>
                     </p>
                 </div>
