@@ -13,10 +13,11 @@ solid principles of clean and maintainable code.
 
 ## Extra Features
 
+- Used genAI to create desktop version of the background
+- used genAI to separate The Hunch from the background
 - Tailwind CSS for styling
 - Multistep registration form
 - Use of Redux for state management
-- Used genAI to create desktop version of the background
 - Fireworks animation component for mobile
 
 ## What needs improvement

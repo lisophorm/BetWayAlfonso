@@ -88,25 +88,23 @@ a {
   transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease, opacity 160ms ease;
 }
 
-/* Primary = green bg, white text */
 .btn-primary {
-  background: rgb(0, 168, 38);
+  background: var(--brand);
   color: #fff;
-
+  transition: background .2s ease;
 }
 
 .btn-primary:hover {
-  background: rgb(0, 204, 44);
+  background: color-mix(in oklch, var(--brand), white 18%);
 }
 
-/* Secondary = white bg, green text */
 .btn-secondary {
   background: #fff;
-  color: rgb(0, 168, 38);
+  color: var(--brand);
 }
 
 .btn-secondary:hover {
-  background: rgb(0, 168, 38);
+  background: var(--brand);
   color: #fff;
 }
 
