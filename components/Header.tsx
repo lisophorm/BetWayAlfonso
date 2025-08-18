@@ -33,10 +33,9 @@ export default function Header({onLoginClick, onTabChange}: HeaderProps) {
         <header className="text-white interface-font">
             {/* Row 1 — black bar: brand + auth */}
             <div className="bg-black">
-                <div
-                    className="container mx-auto px-4 py-3 grid grid-cols-2 items-center gap-y-2 md:grid-cols-[auto_1fr_auto]">
+                <div className="mx-auto px-4 py-3 flex items-center justify-between">
                     {/* brand */}
-                    <div className="col-start-1 row-start-1">
+                    <div className="flex-shrink-0">
                         <Image
                             src="/images/betway-logo.svg"
                             alt="Betway"
@@ -48,24 +47,22 @@ export default function Header({onLoginClick, onTabChange}: HeaderProps) {
                     </div>
 
                     {/* auth */}
-                    <div className="col-start-2 row-start-1 justify-self-end flex header-auth">
-
-                            <button className="btn btn-primary" onClick={onLoginClick}>
-                                {content?.login ?? 'Login'}
-                            </button>
-                    <Link href="/register">
-                        <button className="btn btn-secondary ml-2">
-                            {content?.signup ?? 'Sign up'}
+                    <div className="flex items-center header-auth">
+                        <button className="btn btn-primary" onClick={onLoginClick}>
+                            {content?.login ?? 'Login'}
                         </button>
-                    </Link>
-
+                        <Link href="/register">
+                            <button className="btn btn-secondary ml-2">
+                                {content?.signup ?? 'Sign up'}
+                            </button>
+                        </Link>
                     </div>
                 </div>
             </div>
 
             {/* Row 2 — grey nav bar */}
             <nav className="nav-grey">
-                <div className="container mx-auto overflow-x-auto no-scrollbar">
+                <div className="mx-auto overflow-x-auto no-scrollbar">
                     <div className="flex h-[36px] md:h-[40px] items-stretch gap-2 md:justify-start">
                         {(content?.nav ?? ['sports', 'live & real', 'casino', 'esports', 'vegas']).map((label) => {
                             const key = keyify(label);
@@ -76,9 +73,7 @@ export default function Header({onLoginClick, onTabChange}: HeaderProps) {
                                     onClick={() => handleTab(label)}
                                     className={
                                         'nav-item ' +
-                                        (active
-                                            ? 'nav-item--active'
-                                            : 'nav-item--inactive')
+                                        (active ? 'nav-item--active' : 'nav-item--inactive')
                                     }
                                 >
                                     {label}
@@ -89,5 +84,6 @@ export default function Header({onLoginClick, onTabChange}: HeaderProps) {
                 </div>
             </nav>
         </header>
+
     );
 }
