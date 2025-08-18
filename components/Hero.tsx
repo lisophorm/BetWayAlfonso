@@ -1,28 +1,19 @@
 'use client';
 
-import {useEffect, useState} from 'react';
-import type {Content} from '../content/types/type.content';
+import {useEffect} from 'react';
 import Link from "next/link";
 import MobileStickyOffer from "@/components/MobileStickyOffer";
+import {fetchContent, selectContent} from '@/store/slices/contentSlice';
+import {useAppDispatch, useAppSelector} from "@/store/hooks";
+
 
 export default function Hero() {
-    // Only needed for the mobile sticky CTA
-    const [content, setContent] = useState<Pick<
-        Content,
-        'offerTitle' | 'offerSubtitle' | 'offerCTA' | 'nav' | 'login' | 'signup' | 'brandColors'
-    > | null>(null);
+    const dispatch = useAppDispatch();
 
+    const content = useAppSelector(selectContent);
     useEffect(() => {
-        fetch('/api/content')
-            .then((r) => r.json())
-            .then((d) =>
-                setContent({
-                    offerTitle: d.offerTitle,
-                    offerSubtitle: d.offerSubtitle,
-                    offerCTA: d.offerCTA,
-                })
-            );
-    }, []);
+        dispatch(fetchContent());
+    }, [dispatch]);
 
     return (
         <section className="relative z-10 w-full pointer-events-auto" aria-label="Hero">

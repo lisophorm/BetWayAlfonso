@@ -3,6 +3,11 @@
 ## Live demo:
 (https://bet-way-alfonso.vercel.app/)
 
+## Notes on Code Quality
+
+This project already follows key coding best practices such as clear structure, reusable components, and consistent styling.  
+While there are still a few elements that could be refined or extended, the overall implementation aims to demonstrate solid principles of clean and maintainable code.
+
 ## Extra Features
 - Tailwind CSS for styling
 - Multistep registration form
