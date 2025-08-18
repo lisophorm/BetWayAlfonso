@@ -27,7 +27,7 @@ export default function Hero() {
     return (
         <section className="relative z-10 w-full pointer-events-auto" aria-label="Hero">
             {content && (
-                <div className="grid grid-cols-6 mx-auto px-24 py-16 text-left md:py-24">
+                <div className="hidden md:grid grid-cols-6 mx-auto px-24 py-16 text-left md:py-24">
                     <div
                         className="col-start-1 col-end-4 xl:col-start-2 xl:col-end-6">
                         <p className="mt-3 text-lg md:text-2xl opacity-90 max-w-2xl uppercase">{content.offerSubtitle}</p>

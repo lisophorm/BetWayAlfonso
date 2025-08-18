@@ -24,7 +24,7 @@ export default function MobileStickyOffer({content}: { content: Content|null }) 
             <div className="max-w-screen-sm mx-auto text-center">
                 {/* (1) Two rows: offerSubtitle then offerTitle */}
                 {content.offerSubtitle && (
-                    <div className="text-xs tracking-wide opacity-90 uppercase">
+                    <div className="text-sm tracking-wide font-bold uppercase">
                         {content.offerSubtitle}
                     </div>
                 )}

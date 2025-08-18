@@ -72,7 +72,7 @@ export default function LoginModal({ onClose }: Props) {
                         </div>
                     )}
 
-                    <label htmlFor="email" className="block text-[15px] md:text-base font-medium mb-1">
+                    <label htmlFor="email" className="block md:text-base text-sm font-medium mb-1">
                         Username
                     </label>
                     <input
@@ -81,10 +81,10 @@ export default function LoginModal({ onClose }: Props) {
                         placeholder="Username"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="w-full border border-gray-300 px-3 py-3 text-[15px] md:text-base placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-[var(--brand)] focus:border-[var(--brand)] rounded-none md:rounded"
+                        className="w-full border border-gray-300 px-3 text-sm py-3 md:text-base placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-[var(--brand)] focus:border-[var(--brand)] rounded-none md:rounded"
                     />
 
-                    <label htmlFor="password" className="block text-[15px] md:text-base font-medium mt-3.5 mb-1">
+                    <label htmlFor="password" className="block md:text-base text-sm font-medium mt-3.5 mb-1">
                         Password
                     </label>
                     <input
@@ -93,7 +93,7 @@ export default function LoginModal({ onClose }: Props) {
                         placeholder="Password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="w-full border border-gray-300 px-3 py-3 text-[15px] md:text-base placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-[var(--brand)] focus:border-[var(--brand)] rounded-none md:rounded"
+                        className="w-full border border-gray-300 px-3 py-3 text-sm md:text-base placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-[var(--brand)] focus:border-[var(--brand)] rounded-none md:rounded"
                     />
 
                     {/* Centered 50% button on all sizes */}

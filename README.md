@@ -11,6 +11,7 @@
 - Fireworks animation component for mobile
 
 ## What needs improvement
+- png background images are not optimized. Instead of a transparent png I would have used an svg cutout
 - I should have split the components into smaller ones
 - I have done only few tests
 - I should have managed more elements in redux
