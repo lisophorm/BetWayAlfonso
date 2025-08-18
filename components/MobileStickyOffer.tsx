@@ -1,14 +1,8 @@
 'use client';
 
-import {useEffect, useState} from 'react';
 import Link from 'next/link';
 import FireworksCanvas from "@/components/FireworksCanvas";
-
-type Content = {
-    offerTitle: string;
-    offerSubtitle: string;
-    offerCTA: string;
-};
+import {Content} from "../content/types/type.content";
 
 export default function MobileStickyOffer({content}: { content: Content|null }) {
 

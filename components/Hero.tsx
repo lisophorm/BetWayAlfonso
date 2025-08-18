@@ -3,14 +3,13 @@
 import {useEffect, useState} from 'react';
 import type {Content} from '../content/types/type.content';
 import Link from "next/link";
-import FireworksCanvas from "@/components/FireworksCanvas";
 import MobileStickyOffer from "@/components/MobileStickyOffer";
 
 export default function Hero() {
     // Only needed for the mobile sticky CTA
     const [content, setContent] = useState<Pick<
         Content,
-        'offerTitle' | 'offerSubtitle' | 'offerCTA'
+        'offerTitle' | 'offerSubtitle' | 'offerCTA' | 'nav' | 'login' | 'signup' | 'brandColors'
     > | null>(null);
 
     useEffect(() => {
