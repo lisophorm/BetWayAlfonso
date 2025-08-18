@@ -37,7 +37,7 @@ export default function Hero() {
                     </div>
                 </div>
             )}
-            {/* Mobile: sticky CTA at the bottom (unchanged) */}
+            {/* Mobile: sticky CTA at the bottom */}
             <MobileStickyOffer content={content}/>
 
         </section>

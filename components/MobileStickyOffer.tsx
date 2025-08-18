@@ -22,7 +22,6 @@ export default function MobileStickyOffer({content}: { content: Content | null }
         >
             <FireworksCanvas active={true}/>
             <div className="max-w-screen-sm mx-auto text-center">
-                {/* (1) Two rows: offerSubtitle then offerTitle */}
                 {content.offerSubtitle && (
                     <div className="text-sm tracking-wide font-bold uppercase">
                         {content.offerSubtitle}
@@ -34,7 +33,6 @@ export default function MobileStickyOffer({content}: { content: Content | null }
                     </div>
                 )}
 
-                {/* (2) Button 70% width; (3) centered */}
                 <Link href="/register" className="inline-block mt-4 w-full">
                     <button
                         className="btn btn-primary block mx-auto w-[70%] button-jittery"

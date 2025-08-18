@@ -3,9 +3,6 @@ import authReducer from './slices/authSlice';
 import contentReducer from './slices/contentSlice';
 import registerReducer from './slices/registerSlice';
 
-// IMPORTANT: use the SAME KEYS you use in the real app.
-// If your real app uses { authentication, content, registration },
-// then rename the keys here to match exactly.
 export const rootReducer = combineReducers({
     auth: authReducer,
     content: contentReducer,

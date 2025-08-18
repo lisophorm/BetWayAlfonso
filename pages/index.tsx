@@ -11,7 +11,7 @@ export default function Home() {
             <Header onLoginClick={() => setShowLogin(true)} onTabChange={() => {
             }}/>
             <main className="relative grow flex items-center isolation-auto">
-                {/* Hires background (behind everything) */}
+                {/* Hires genAI background with fans (behind everything) */}
                 <div
                     aria-hidden="true"
                     className="
@@ -25,7 +25,6 @@ export default function Home() {
                     />
                 </div>
 
-                {/* Foreground background layer (mobile/desktop hero switch) */}
                 <div
                     aria-hidden="true"
                     className="absolute inset-0 -z-10 pointer-events-none select-none

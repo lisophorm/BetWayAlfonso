@@ -1,6 +1,3 @@
-// /services/register.ts
-
-
 import {RegistrationResponse} from "../content/types/type.Registration";
 import {RegistrationPayload} from "../content/types/type.RegistrationStep";
 

@@ -17,7 +17,7 @@ export function isAtLeast18(dob: DOB) {
 }
 
 export function isValidPhone(phone: string) {
-    if (!phone) return true; // optional field; flip to false if required
+    if (!phone) return true;
     const count = digitsOnly(phone);
     return count >= 10 && count <= 15;
 }

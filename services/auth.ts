@@ -1,5 +1,3 @@
-// /services/auth.ts
-
 import {SignInResponse} from "../content/types/type.SigninResponse";
 
 export async function signIn(email: string, password: string): Promise<SignInResponse> {

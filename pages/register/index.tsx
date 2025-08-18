@@ -1,4 +1,3 @@
-// /pages/register/index.tsx
 'use client';
 
 import {useMemo, useState} from 'react';
@@ -409,7 +408,7 @@ function Step3() {
                 <div>
                     <FieldLabel>Email</FieldLabel>
                     <Input
-                        type="text" // custom validation; avoid built-in browser validation
+                        type="text"
                         value={form.email}
                         onChange={(e) => dispatch(patchForm({email: e.target.value}))}
                     />
@@ -428,7 +427,7 @@ function Step4() {
             <h2 className="text-lg font-bold mb-3">Contact Details</h2>
             <div className="space-y-4">
                 <div>
-                    <FieldLabel>Phone {/** optional */}</FieldLabel>
+                    <FieldLabel>Phone</FieldLabel>
                     <Input
                         inputMode="tel"
                         value={form.phone}

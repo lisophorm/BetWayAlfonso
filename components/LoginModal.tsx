@@ -41,7 +41,6 @@ export default function LoginModal({onClose}: Props) {
             {/* Backdrop */}
             <div className="absolute inset-0 bg-black/30" onClick={onClose}/>
 
-            {/* Panel: flush on mobile, rounded on md+ */}
             <div
                 className="relative bg-white shadow-xl overflow-hidden w-screen md:w-[92%] md:max-w-[640px] md:rounded-md">
                 {/* Header */}
@@ -63,7 +62,6 @@ export default function LoginModal({onClose}: Props) {
                     </p>
                 </div>
 
-                {/* Form */}
                 <form onSubmit={handleSubmit} className="px-4 md:px-6 pt-4 pb-6">
                     {error && (
                         <div
@@ -98,7 +96,6 @@ export default function LoginModal({onClose}: Props) {
                         className="w-full border border-gray-300 px-3 py-3 text-sm md:text-base placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-[var(--brand)] focus:border-[var(--brand)] rounded-none md:rounded"
                     />
 
-                    {/* Centered 50% button on all sizes */}
                     <div className="mt-5 flex justify-center">
                         <button
                             type="submit"
@@ -109,7 +106,6 @@ export default function LoginModal({onClose}: Props) {
                         </button>
                     </div>
 
-                    {/* Forgot link green (also when visited) */}
                     <div className="mt-3 text-sm text-center">
                         <Link
                             href="#"
