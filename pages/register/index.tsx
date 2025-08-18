@@ -104,8 +104,8 @@ export default function RegisterPage() {
                                     <li key={s.key} className="flex flex-col items-center gap-2">
               <span
                   className={[
-                      'z-10 inline-flex items-center justify-center w-7 h-7 rounded-sm text-white text-sm font-semibold',
-                      done ? 'bg-[var(--brand)]' : active ? 'bg-[var(--brand)]' : 'bg-gray-300',
+                      'z-10 inline-flex step-number',
+                      done ? 'bg-[var(--brand)]' : active ? 'active' : '',
                   ].join(' ')}
               >
                 {s.key}

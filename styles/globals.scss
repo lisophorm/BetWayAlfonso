@@ -256,3 +256,24 @@ button:focus-visible, [role="button"]:focus-visible {
     transform: scale(1.1);
   }
 }
+
+.step-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 28px;   /* same height & width makes it a square base */
+  height: 28px;
+  border-radius: 50%;  /* <-- this makes it a circle */
+
+  font-size: 14px;
+  font-weight: 600;
+
+  background: #ccc;     /* default grey */
+  color: #fff;
+}
+
+.step-number.active {
+  background: var(--brand);  /* brand green */
+  color: #fff;
+}
