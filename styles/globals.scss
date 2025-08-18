@@ -13,8 +13,12 @@ html, body {
 
 body {
   margin: 0;
-  color: #111;
+  color: #404040;
   font-family: "Helvetica Neue", -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;
+}
+
+input, select, textarea, label {
+  color: inherit;
 }
 
 a {
@@ -24,6 +28,16 @@ a {
 
 .interface-font {
   font-family: Interface, Arial, sans-serif;
+}
+
+.text-brand {
+  color: var(--brand);
+}
+
+.text-brand-underline {
+  color: var(--brand);
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 /* =====================
@@ -71,7 +85,6 @@ a {
   border-radius: 3px; /* subtle corners */
   font-weight: 600;
   border: 1px solid transparent;
-  cursor: pointer;
   transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease, opacity 160ms ease;
 }
 
@@ -95,6 +108,14 @@ a {
 .btn-secondary:hover {
   background: rgb(0, 168, 38);
   color: #fff;
+}
+
+button,
+[role="button"],
+a,
+.btn,
+.nav-item {
+  cursor: pointer;
 }
 
 /* =====================

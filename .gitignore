@@ -10,3 +10,5 @@ yarn-error.log*
 /.next/
 .idea/
 /package-lock.json
+/buildoutput.txt
+/jest_output.json

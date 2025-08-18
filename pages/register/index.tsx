@@ -91,61 +91,56 @@ export default function RegisterPage() {
             </header>
 
             {/* Main */}
-            <main className="container mx-auto px-4 py-6">
-                {/* Progress */}
-                <ol className="relative grid grid-cols-4 items-start mb-6">
-                    {/* connector line runs behind the circles */}
-                    <div className="absolute left-0 right-0 top-[14px] h-px bg-gray-200"></div>
+            <main className="container mx-auto px-4">
+                <div className="flex min-h-[calc(100vh-120px)] items-center justify-center py-6">
+                    <div className="w-full max-w-[560px]">
+                        {/* Progress */}
+                        <ol className="relative grid grid-cols-4 items-start mb-6">
+                            <div className="absolute left-0 right-0 top-[14px] h-px bg-gray-200"></div>
+                            {steps.map((s) => {
+                                const active = s.key === step;
+                                const done = s.key < step;
+                                return (
+                                    <li key={s.key} className="flex flex-col items-center gap-2">
+              <span
+                  className={[
+                      'z-10 inline-flex items-center justify-center w-7 h-7 rounded-sm text-white text-sm font-semibold',
+                      done ? 'bg-[var(--brand)]' : active ? 'bg-[var(--brand)]' : 'bg-gray-300',
+                  ].join(' ')}
+              >
+                {s.key}
+              </span>
+                                        <span
+                                            className={['text-sm text-center', active ? 'font-semibold' : 'opacity-70'].join(' ')}>
+                {s.label}
+              </span>
+                                    </li>
+                                );
+                            })}
+                        </ol>
 
-                    {steps.map((s) => {
-                        const active = s.key === step;
-                        const done = s.key < step;
-                        return (
-                            <li key={s.key} className="flex flex-col items-center gap-2">
-        <span
-            className={[
-                'z-10 inline-flex items-center justify-center w-7 h-7 rounded-full text-white text-sm font-semibold',
-                done ? 'bg-[var(--brand)]' : active ? 'bg-[var(--brand)]' : 'bg-gray-300',
-            ].join(' ')}
-        >
-          {s.key}
-        </span>
-                                <span
-                                    className={['text-sm text-center', active ? 'font-semibold' : 'opacity-70'].join(' ')}>
-          {s.label}
-        </span>
-                            </li>
-                        );
-                    })}
-                </ol>
+                        {/* Card */}
+                        <section className="bg-white rounded-sm shadow-sm p-4 md:p-6">
+                            {error && <p className="text-red-600 mb-3">{error}</p>}
+                            {step === 1 && <Step1/>}
+                            {step === 2 && <Step2/>}
+                            {step === 3 && <Step3/>}
+                            {step === 4 && <Step4/>}
 
-                {/* Card */}
-                <section className="bg-white rounded-lg shadow-sm p-4 md:p-6">
-                    {error && <p className="text-red-600 mb-3">{error}</p>}
-
-                    {step === 1 && <Step1/>}
-                    {step === 2 && <Step2/>}
-                    {step === 3 && <Step3/>}
-                    {step === 4 && <Step4/>}
-
-                    <div className="mt-6 flex items-center justify-between">
-                        <button
-                            className="btn btn-secondary"
-                            onClick={prev}
-                            disabled={step === 1 || status === 'submitting'}
-                        >
-                            Back
-                        </button>
-                        <button
-                            className="btn btn-primary"
-                            onClick={next}
-                            disabled={status === 'submitting'}
-                        >
-                            {step === 4 ? (status === 'submitting' ? 'Submitting…' : 'Finish') : 'Next'}
-                        </button>
+                            <div className="mt-6 flex items-center justify-between">
+                                <button className="btn btn-secondary" onClick={prev}
+                                        disabled={step === 1 || status === 'submitting'}>
+                                    Back
+                                </button>
+                                <button className="btn btn-primary" onClick={next} disabled={status === 'submitting'}>
+                                    {step === 4 ? (status === 'submitting' ? 'Submitting…' : 'Finish') : 'Next'}
+                                </button>
+                            </div>
+                        </section>
                     </div>
-                </section>
+                </div>
             </main>
+
         </div>
     );
 }
@@ -162,7 +157,7 @@ function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
         <input
             {...props}
             className={
-                'w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[var(--brand)] ' +
+                'w-full border rounded-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[var(--brand)] ' +
                 (props.className ?? '')
             }
         />
